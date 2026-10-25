@@ -1,9 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 from pdf_reader import extract_text
 from text_splitter import split_text
 from vector_store import add_chunks, search_chunks
 
 app = Flask(__name__)
+
+CORS(app)
 
 
 @app.route("/", methods=["GET"])

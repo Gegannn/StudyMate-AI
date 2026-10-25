@@ -6,6 +6,11 @@ function App() {
   const [message, setMessage] = useState("");
   const [documentInfo, setDocumentInfo] = useState(null);
 
+  const [selectedFilename, setSelectedFilename] = useState("");
+  const [question, setQuestion] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [matches, setMatches] = useState([]);
+
   const handleUpload = async (event) => {
 
     const file = event.target.files[0];
@@ -41,10 +46,13 @@ function App() {
       setMessage(data.message);
 
       if (data.total_pages && data.total_chunks) {
+
         setDocumentInfo({
             totalPages: data.total_pages,
             totalChunks: data.total_chunks
         });
+
+        setSelectedFilename(file.name);
       }
 
     } catch (error) {
@@ -59,6 +67,63 @@ function App() {
 
     }
   };
+
+  const handleSearch = async () => {
+
+  if (!question.trim()) {
+    return;
+  }
+
+  if (!selectedFilename) {
+    setMessage("Please upload a PDF first.");
+    return;
+  }
+
+  try {
+
+    setSearching(true);
+    setMatches([]);
+    setMessage("");
+
+    const response = await fetch(
+      "http://127.0.0.1:8000/search",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          query: question,
+          filename: selectedFilename
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!data.success) {
+      setMessage("Search failed.");
+      return;
+    }
+
+    setMatches(data.matches);
+
+    if (data.matches.length === 0) {
+      setMessage("No relevant information found in this document.");
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    setMessage("Could not connect to StudyMate AI.");
+
+  } finally {
+
+    setSearching(false);
+
+  }
+};
 
 
   return (
@@ -161,19 +226,66 @@ function App() {
             <div className="bg-white rounded-xl border p-4">
 
               <textarea
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
                 placeholder="Ask something about your study material..."
                 className="w-full h-32 resize-none outline-none"
               />
 
               <div className="flex justify-end">
 
-                <button className="bg-black text-white px-5 py-2 rounded-lg">
-                  Ask StudyMate
+                <button
+                  onClick={handleSearch}
+                  disabled={searching}
+                  className="bg-black text-white px-5 py-2 rounded-lg"
+                >
+                  {searching ? "Searching..." : "Ask StudyMate"}
                 </button>
 
               </div>
 
             </div>
+
+                        {/* Retrieved chunks */}
+
+            {matches.length > 0 && (
+
+              <div className="mt-6 space-y-4">
+
+                <h3 className="font-semibold text-lg">
+                  Relevant information
+                </h3>
+
+                {matches.map((match, index) => (
+
+                  <div
+                    key={index}
+                    className="bg-white border rounded-xl p-4"
+                  >
+
+                    <div className="flex justify-between mb-2">
+
+                      <span className="text-sm font-semibold">
+                        Page {match.page}
+                      </span>
+
+                      <span className="text-xs text-gray-500">
+                        Distance: {match.distance.toFixed(3)}
+                      </span>
+
+                    </div>
+
+                    <p className="text-sm text-gray-700 whitespace-pre-line">
+                      {match.text}
+                    </p>
+
+                  </div>
+
+                ))}
+
+              </div>
+
+            )}
 
           </div>
 
