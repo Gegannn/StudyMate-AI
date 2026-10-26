@@ -10,6 +10,7 @@ function App() {
   const [question, setQuestion] = useState("");
   const [searching, setSearching] = useState(false);
   const [matches, setMatches] = useState([]);
+  const [answer, setAnswer] = useState("");
 
   const handleUpload = async (event) => {
 
@@ -83,6 +84,7 @@ function App() {
 
     setSearching(true);
     setMatches([]);
+    setAnswer("");
     setMessage("");
 
     const response = await fetch(
@@ -106,8 +108,8 @@ function App() {
       return;
     }
 
+    setAnswer(data.answer);
     setMatches(data.matches);
-
     if (data.matches.length === 0) {
       setMessage("No relevant information found in this document.");
     }
@@ -245,6 +247,22 @@ function App() {
               </div>
 
             </div>
+
+            {answer && (
+
+              <div className="mt-6 bg-white border rounded-xl p-6">
+
+              <h3 className="font-semibold text-lg mb-3">
+                  StudyMate AI
+              </h3>
+
+              <p className="text-gray-700 whitespace-pre-line leading-relaxed">
+                {answer}
+              </p>
+
+            </div>
+
+          )}
 
                         {/* Retrieved chunks */}
 

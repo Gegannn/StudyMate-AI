@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from llm import generate_answer
 from pdf_reader import extract_text
 from text_splitter import split_text
 from vector_store import add_chunks, search_chunks
@@ -129,7 +130,7 @@ def search():
 
         matches = []
 
-        for i in range(len(documents)):
+        for i in range(len(documents)):    
 
             matches.append({
                 "text": documents[i],
@@ -138,9 +139,34 @@ def search():
                 "distance": distances[i]
             })
 
+
+        # Combine retrieved chunks into one context
+        context_parts = []
+
+        for match in matches:
+
+            context_parts.append(
+                f"Page {match['page']}:\n{match['text']}"
+            )
+
+        context = "\n\n".join(context_parts)
+
+        print("QUESTION:", query)
+        print("CONTEXT SENT TO QWEN:")
+        print(context)
+
+        # Generate answer using Qwen3
+        answer = generate_answer(
+            query,
+            context
+        )
+        print("QWEN ANSWER:")
+        print(answer)        
+
         return jsonify({
             "success": True,
             "query": query,
+            "answer": answer,
             "matches": matches
         })
 
