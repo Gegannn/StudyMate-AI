@@ -1,6 +1,60 @@
 @import "tailwindcss";
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+@layer base {
+  :root {
+    --color-da: #06b6d4;
+    --color-bdp: #3b82f6;
+    --color-cd: #ef4444;
+    --color-cn: #a855f7;
+    --color-aad: #f97316;
+    --color-ai: #10b981;
+    --color-iot: #84cc16;
+    --color-lab: #ec4899;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.4);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s infinite ease-in-out;
 }

@@ -1,0 +1,15 @@
+{
+  "name": "studymate-ai-beast-mode",
+  "version": "2.0.0",
+  "description": "StudyMate AI Beast Mode — World-Class AI Learning Operating System for Students",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "build": "cd client && npm run build",
+    "dev": "cd client && npm run dev",
+    "server": "cd server && node server.js",
+    "ai": "cd ai && .\\venv\\Scripts\\python app.py"
+  },
+  "author": "Google DeepMind Advanced Agentic Coding",
+  "license": "ISC"
+}

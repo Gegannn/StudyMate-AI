@@ -1,319 +1,308 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import BackgroundCanvas from "./components/BackgroundCanvas";
+import { Header } from "./components/Header";
+import { Navigation } from "./components/Navigation";
+import { CommandCenter } from "./components/Dashboard/CommandCenter";
+import { CompanionView } from "./components/Companion/CompanionView";
+import { TimetableView } from "./components/Timetable/TimetableView";
+import { StudyMapView } from "./components/StudyMap/StudyMapView";
+import { MaterialsView } from "./components/Materials/MaterialsView";
+import { VisualLabView } from "./components/VisualLab/VisualLabView";
+import { RecallView } from "./components/Recall/RecallView";
+import { QuizExamView } from "./components/Practice/QuizExamView";
+import { MemoryLabView } from "./components/MemoryLab/MemoryLabView";
+import { LabVivaView } from "./components/LabViva/LabVivaView";
+import { AnalyticsView } from "./components/Analytics/AnalyticsView";
+import { FocusTimerModal } from "./components/FocusTimer/FocusTimerModal";
+import { CramModal } from "./components/Dashboard/CramModal";
+import { SettingsModal } from "./components/SettingsModal";
+import { loadStudentMemory, saveStudentMemory } from "./state/studentMemory";
 
-function App() {
+export default function App() {
+  const [studentState, setStudentState] = useState(() => loadStudentMemory());
+  const [activeTab, setActiveTab] = useState("dashboard");
+  const [theme, setTheme] = useState(() => localStorage.getItem("mace_theme") || "dark");
 
-  const [uploading, setUploading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [documentInfo, setDocumentInfo] = useState(null);
+  // Companion launch state
+  const [companionTopic, setCompanionTopic] = useState("Master's Theorem Recurrences");
+  const [companionSubject, setCompanionSubject] = useState("aad");
 
-  const [selectedFilename, setSelectedFilename] = useState("");
-  const [question, setQuestion] = useState("");
-  const [searching, setSearching] = useState(false);
-  const [matches, setMatches] = useState([]);
-  const [answer, setAnswer] = useState("");
+  // Modals state
+  const [timerModalOpen, setTimerModalOpen] = useState(false);
+  const [cramModalOpen, setCramModalOpen] = useState(false);
+  const [cramInitialTimeframe, setCramInitialTimeframe] = useState("3hours");
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
-  const handleUpload = async (event) => {
+  // Focus Timer state
+  const [timerState, setTimerState] = useState({
+    secondsLeft: 25 * 60,
+    totalSeconds: 25 * 60,
+    isRunning: false,
+    goal: "Master AVL Tree Rotations & Balance Factors"
+  });
 
-    const file = event.target.files[0];
-
-    if (!file) {
-      return;
+  // Theme effect
+  useEffect(() => {
+    localStorage.setItem("mace_theme", theme);
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
+  }, [theme]);
 
-    if (file.type !== "application/pdf") {
-      setMessage("Please select a PDF file.");
-      return;
-    }
+  // Save student memory changes
+  const updateStudentState = (updater) => {
+    setStudentState((prev) => {
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      saveStudentMemory(next);
+      return next;
+    });
+  };
 
-    const formData = new FormData();
-
-    formData.append("pdf", file);
-
+  // Synthesized Web Audio chime on timer completion
+  const playChime = () => {
     try {
-
-      setUploading(true);
-      setMessage("");
-
-      const response = await fetch(
-        "http://localhost:5000/api/documents/upload",
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-
-      const data = await response.json();
-
-      setMessage(data.message);
-
-      if (data.total_pages && data.total_chunks) {
-
-        setDocumentInfo({
-            totalPages: data.total_pages,
-            totalChunks: data.total_chunks
-        });
-
-        setSelectedFilename(file.name);
-      }
-
-    } catch (error) {
-
-      console.error(error);
-
-      setMessage("Upload failed.");
-
-    } finally {
-
-      setUploading(false);
-
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3); // A5
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 1.2);
+    } catch (e) {
+      console.warn("Audio Context unavailable:", e);
     }
   };
 
-  const handleSearch = async () => {
-
-  if (!question.trim()) {
-    return;
-  }
-
-  if (!selectedFilename) {
-    setMessage("Please upload a PDF first.");
-    return;
-  }
-
-  try {
-
-    setSearching(true);
-    setMatches([]);
-    setAnswer("");
-    setMessage("");
-
-    const response = await fetch(
-      "http://127.0.0.1:8000/search",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          query: question,
-          filename: selectedFilename
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if (!data.success) {
-      setMessage("Search failed.");
-      return;
+  // Timer Tick
+  useEffect(() => {
+    let interval;
+    if (timerState.isRunning && timerState.secondsLeft > 0) {
+      interval = setInterval(() => {
+        setTimerState((prev) => {
+          if (prev.secondsLeft <= 1) {
+            playChime();
+            return { ...prev, secondsLeft: 0, isRunning: false };
+          }
+          return { ...prev, secondsLeft: prev.secondsLeft - 1 };
+        });
+      }, 1000);
     }
+    return () => clearInterval(interval);
+  }, [timerState.isRunning, timerState.secondsLeft]);
 
-    setAnswer(data.answer);
-    setMatches(data.matches);
-    if (data.matches.length === 0) {
-      setMessage("No relevant information found in this document.");
-    }
+  // Master Handlers
+  const handleToggleTask = (taskId) => {
+    updateStudentState((prev) => {
+      const current = !!prev.completedTasks[taskId];
+      const updated = { ...prev.completedTasks, [taskId]: !current };
+      return { ...prev, completedTasks: updated };
+    });
+  };
 
-  } catch (error) {
+  const handleUpdateMastery = (topic, score, level) => {
+    updateStudentState((prev) => {
+      const existing = prev.topicMastery[topic] || {};
+      const updated = {
+        ...prev.topicMastery,
+        [topic]: {
+          ...existing,
+          score,
+          level,
+          lastStudied: new Date().toISOString().split("T")[0],
+          timesReviewed: (existing.timesReviewed || 0) + 1
+        }
+      };
+      return { ...prev, topicMastery: updated };
+    });
+  };
 
-    console.error(error);
+  const handleLaunchCompanion = (topic, subject, task = null) => {
+    setCompanionTopic(topic);
+    setCompanionSubject(subject || "aad");
+    setActiveTab("companion");
 
-    setMessage("Could not connect to StudyMate AI.");
+    // Also update focus timer goal!
+    setTimerState((prev) => ({
+      ...prev,
+      goal: `Learn & Master: ${topic}`
+    }));
 
-  } finally {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-    setSearching(false);
+  const handleOpenCram = (timeframe = "3hours") => {
+    setCramInitialTimeframe(timeframe);
+    setCramModalOpen(true);
+  };
 
-  }
-};
-
+  const handleResetState = () => {
+    localStorage.removeItem("studymate_memory_v2");
+    localStorage.removeItem("mace_aiml_study_progress");
+    window.location.reload();
+  };
 
   return (
+    <div className={`min-h-screen relative font-sans ${theme === "dark" ? "text-slate-100" : "text-slate-900"}`}>
+      {/* Dynamic Moving Background Canvas */}
+      <BackgroundCanvas theme={theme} />
 
-    <div className="min-h-screen bg-gray-100">
+      {/* Main Container */}
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Sticky Header with Live Countdown Ribbon */}
+        <Header
+          theme={theme}
+          onToggleTheme={() => setTheme(t => t === "dark" ? "light" : "dark")}
+          onOpenSettings={() => setSettingsOpen(true)}
+          onOpenTimer={() => setTimerModalOpen(true)}
+          timerState={timerState}
+          studentState={studentState}
+        />
 
-      {/* Header */}
+        {/* Unified Navigation Bar */}
+        <Navigation
+          activeTab={activeTab}
+          onSelectTab={setActiveTab}
+          unreadRecalls={studentState.revisionQueue?.length || 0}
+        />
 
-      <header className="bg-white border-b px-6 py-4">
-
-        <h1 className="text-2xl font-bold">
-          StudyMate AI
-        </h1>
-
-        <p className="text-gray-500 text-sm">
-          Your personal AI study assistant
-        </p>
-
-      </header>
-
-
-      <div className="flex">
-
-
-        {/* Sidebar */}
-
-        <aside className="w-64 min-h-[calc(100vh-81px)] bg-white border-r p-5">
-
-          <h2 className="font-semibold mb-4">
-            My Documents
-          </h2>
-
-
-          {/* Hidden file input */}
-
-          <input
-            type="file"
-            accept="application/pdf"
-            id="pdf-upload"
-            onChange={handleUpload}
-            className="hidden"
-          />
-
-
-          {/* Upload button */}
-
-          <label
-            htmlFor="pdf-upload"
-            className="block text-center cursor-pointer bg-black text-white py-2 rounded-lg"
-          >
-            {uploading ? "Uploading..." : "+ Upload PDF"}
-          </label>
-
-
-          {/* Upload message */}
-
-          {message && (
-            <p className="text-sm mt-4 text-gray-600">
-              {message}
-            </p>
-          )}
-          {documentInfo && (
-            <div className="mt-5 p-4 bg-gray-100 rounded-lg">
-
-                <p className="font-semibold">
-                    Document processed
-                </p>
-
-                <p className="text-sm text-gray-600 mt-2">
-                    Pages: {documentInfo.totalPages}
-                </p>
-
-                <p className="text-sm text-gray-600">
-                    Chunks: {documentInfo.totalChunks}
-                </p>
-
-            </div>
+        {/* Viewport Workspace */}
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+          {activeTab === "dashboard" && (
+            <CommandCenter
+              studentState={studentState}
+              onLaunchCompanion={handleLaunchCompanion}
+              onSelectTab={setActiveTab}
+              onOpenCram={handleOpenCram}
+            />
           )}
 
-        </aside>
-
-
-        {/* Main content */}
-
-        <main className="flex-1 p-10">
-
-          <div className="max-w-3xl mx-auto">
-
-            <h2 className="text-3xl font-bold mb-2">
-              What do you want to learn?
-            </h2>
-
-            <p className="text-gray-500 mb-8">
-              Upload your study material and ask StudyMate anything.
-            </p>
-
-
-            {/* Chat box */}
-
-            <div className="bg-white rounded-xl border p-4">
-
-              <textarea
-                value={question}
-                onChange={(event) => setQuestion(event.target.value)}
-                placeholder="Ask something about your study material..."
-                className="w-full h-32 resize-none outline-none"
-              />
-
-              <div className="flex justify-end">
-
-                <button
-                  onClick={handleSearch}
-                  disabled={searching}
-                  className="bg-black text-white px-5 py-2 rounded-lg"
-                >
-                  {searching ? "Searching..." : "Ask StudyMate"}
-                </button>
-
-              </div>
-
-            </div>
-
-            {answer && (
-
-              <div className="mt-6 bg-white border rounded-xl p-6">
-
-              <h3 className="font-semibold text-lg mb-3">
-                  StudyMate AI
-              </h3>
-
-              <p className="text-gray-700 whitespace-pre-line leading-relaxed">
-                {answer}
-              </p>
-
-            </div>
-
+          {activeTab === "companion" && (
+            <CompanionView
+              initialTopic={companionTopic}
+              initialSubject={companionSubject}
+              studentState={studentState}
+              onUpdateMastery={handleUpdateMastery}
+              onCompleteTask={handleToggleTask}
+              onOpenVisualizer={() => setActiveTab("visualizer")}
+            />
           )}
 
-                        {/* Retrieved chunks */}
+          {activeTab === "studymap" && (
+            <StudyMapView
+              studentState={studentState}
+              onLaunchCompanion={handleLaunchCompanion}
+            />
+          )}
 
-            {matches.length > 0 && (
+          {activeTab === "timetable" && (
+            <TimetableView
+              studentState={studentState}
+              onToggleTask={handleToggleTask}
+              onLaunchCompanion={handleLaunchCompanion}
+            />
+          )}
 
-              <div className="mt-6 space-y-4">
+          {activeTab === "materials" && (
+            <MaterialsView
+              studentState={studentState}
+              onLaunchCompanion={handleLaunchCompanion}
+            />
+          )}
 
-                <h3 className="font-semibold text-lg">
-                  Relevant information
-                </h3>
+          {activeTab === "recall" && (
+            <RecallView
+              studentState={studentState}
+              onUpdateMastery={handleUpdateMastery}
+              onLaunchCompanion={handleLaunchCompanion}
+            />
+          )}
 
-                {matches.map((match, index) => (
+          {activeTab === "practice" && (
+            <QuizExamView
+              onUpdateMastery={handleUpdateMastery}
+              onLaunchCompanion={handleLaunchCompanion}
+            />
+          )}
 
-                  <div
-                    key={index}
-                    className="bg-white border rounded-xl p-4"
-                  >
+          {activeTab === "visualizer" && (
+            <VisualLabView
+              onLaunchCompanion={handleLaunchCompanion}
+            />
+          )}
 
-                    <div className="flex justify-between mb-2">
+          {activeTab === "memorylab" && (
+            <MemoryLabView
+              onUpdateMastery={handleUpdateMastery}
+            />
+          )}
 
-                      <span className="text-sm font-semibold">
-                        Page {match.page}
-                      </span>
+          {activeTab === "labviva" && (
+            <LabVivaView />
+          )}
 
-                      <span className="text-xs text-gray-500">
-                        Distance: {match.distance.toFixed(3)}
-                      </span>
-
-                    </div>
-
-                    <p className="text-sm text-gray-700 whitespace-pre-line">
-                      {match.text}
-                    </p>
-
-                  </div>
-
-                ))}
-
-              </div>
-
-            )}
-
-          </div>
-
+          {activeTab === "analytics" && (
+            <AnalyticsView
+              studentState={studentState}
+              onLaunchCompanion={handleLaunchCompanion}
+            />
+          )}
         </main>
 
+        {/* Footer */}
+        <footer className="mt-auto border-t border-slate-800/80 bg-slate-950/60 backdrop-blur-md py-6 text-center text-xs text-slate-500">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div>
+              <strong>StudyMate AI — Beast Mode</strong> • AI Learning Operating System
+            </div>
+            <div className="flex items-center gap-4 text-slate-400">
+              <button onClick={() => setSettingsOpen(true)} className="hover:text-cyan-400">
+                System Diagnostics
+              </button>
+              <button onClick={() => handleOpenCram("3hours")} className="hover:text-amber-400">
+                Cram Mode
+              </button>
+              <button onClick={() => setTimerModalOpen(true)} className="hover:text-cyan-400">
+                Focus Pomodoro
+              </button>
+            </div>
+          </div>
+        </footer>
       </div>
 
-    </div>
+      {/* Modals */}
+      <FocusTimerModal
+        isOpen={timerModalOpen}
+        onClose={() => setTimerModalOpen(false)}
+        timerState={timerState}
+        onStartTimer={() => setTimerState(p => ({ ...p, isRunning: true }))}
+        onPauseTimer={() => setTimerState(p => ({ ...p, isRunning: false }))}
+        onResetTimer={() => setTimerState(p => ({ ...p, secondsLeft: p.totalSeconds, isRunning: false }))}
+        onSetDuration={(secs) => setTimerState(p => ({ ...p, totalSeconds: secs, secondsLeft: secs, isRunning: false }))}
+        onLaunchCompanion={handleLaunchCompanion}
+      />
 
+      <CramModal
+        isOpen={cramModalOpen}
+        onClose={() => setCramModalOpen(false)}
+        studentState={studentState}
+        initialTimeframe={cramInitialTimeframe}
+        onLaunchCompanion={handleLaunchCompanion}
+      />
+
+      <SettingsModal
+        isOpen={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        studentState={studentState}
+        onSaveSettings={(settings) => updateStudentState(p => ({ ...p, settings }))}
+        onResetState={handleResetState}
+      />
+    </div>
   );
 }
-
-export default App;

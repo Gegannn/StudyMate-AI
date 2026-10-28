@@ -1,0 +1,3322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MACE AIML S5 & S3 Exam Master Strategy & Tree Timetable</title>
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --bg-card: rgba(30, 41, 59, 0.85);
+      --bg-card-hover: rgba(51, 65, 85, 0.9);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-accent: #38bdf8;
+      --border-color: #334155;
+      --border-light: rgba(255, 255, 255, 0.1);
+      
+      /* Subject Accent Colors */
+      --color-da: #06b6d4;       /* Data Analytics - Cyan */
+      --color-bdp: #3b82f6;      /* Big Data Processing - Blue */
+      --color-cd: #ef4444;       /* Compiler Design - Red (Hard) */
+      --color-cn: #a855f7;       /* Computer Networks (S3) - Purple (Distinct Backlog/Reg) */
+      --color-aad: #f97316;      /* Algorithm Analysis - Amber/Orange (Critical Zero-gap) */
+      --color-ai: #10b981;       /* Artificial Intelligence - Emerald Green */
+      --color-iot: #84cc16;      /* Internet of Things - Lime Green */
+      --color-minor: #eab308;    /* Minor / Hons - Gold */
+      --color-lab: #ec4899;      /* Lab Exams - Pink */
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #f1f5f9;
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-card-hover: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-accent: #0284c7;
+      --border-color: #cbd5e1;
+      --border-light: rgba(0, 0, 0, 0.08);
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 0;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bg-tertiary);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Sticky Header */
+    header {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-md);
+      backdrop-filter: blur(12px);
+    }
+
+    .header-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-section h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-section h1 .badge {
+      font-size: 0.72rem;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--text-accent);
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 600;
+    }
+
+    .brand-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: var(--bg-tertiary);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--border-color);
+      color: var(--text-accent);
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0369a1;
+    }
+
+    .btn-primary:hover {
+      background: #0369a1;
+      color: #ffffff;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Assumptions Banner */
+    .banner {
+      background: linear-gradient(90deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+      border-bottom: 1px solid var(--border-color);
+      border-left: 4px solid #38bdf8;
+      padding: 10px 24px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .banner strong {
+      color: var(--text-main);
+    }
+
+    .banner-close {
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      padding: 0 4px;
+    }
+
+    /* Live Countdown Ribbon */
+    .countdown-ribbon {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 24px;
+      overflow-x: auto;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .cd-label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cd-chip {
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cd-chip.urgent {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      animation: pulseGlow 2s infinite ease-in-out;
+    }
+
+    .cd-chip.next {
+      border-color: #06b6d4;
+      background: rgba(6, 182, 212, 0.15);
+      color: #67e8f9;
+      font-weight: 700;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+    }
+
+    /* Main Container */
+    .main-layout {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Timeline Ribbon (Compact Calendar) */
+    .timeline-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .timeline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .timeline-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timeline-legend {
+      display: flex;
+      gap: 12px;
+      font-size: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .legend-color {
+      width: 10px;
+      height: 10px;
+      border-radius: 3px;
+    }
+
+    .timeline-track {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .timeline-day {
+      min-width: 82px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 8px 6px;
+      text-align: center;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .timeline-day:hover {
+      border-color: var(--text-accent);
+      transform: translateY(-2px);
+    }
+
+    .timeline-day.today {
+      border: 2px solid #38bdf8;
+      background: rgba(56, 189, 248, 0.15);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    .timeline-day.today::after {
+      content: "TODAY";
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0284c7;
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .timeline-day.exam-day {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+
+    .timeline-day.zero-gap {
+      border: 2px dashed #f97316;
+      background: rgba(249, 115, 22, 0.15);
+    }
+
+    .day-num {
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .day-name {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .day-badge {
+      font-size: 0.68rem;
+      margin-top: 6px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Overall Progress Bar */
+    .progress-section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .overall-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .overall-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stat-group {
+      display: flex;
+      gap: 20px;
+    }
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-val {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text-accent);
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 12px;
+      background: var(--bg-tertiary);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #10b981, #06b6d4);
+      width: 0%;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Subject Quick Grid */
+    .subject-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .subj-pill {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subj-pill:hover {
+      border-color: var(--text-accent);
+      background: var(--bg-card-hover);
+    }
+
+    .subj-pill::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent);
+    }
+
+    .subj-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .subj-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .subj-date {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .subj-bar {
+      height: 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .subj-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .subj-stats {
+      font-size: 0.7rem;
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-muted);
+    }
+
+    /* Strategy Toolbar & Views Selector */
+    .view-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--bg-secondary);
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+    }
+
+    .view-tabs {
+      display: flex;
+      background: var(--bg-primary);
+      padding: 3px;
+      border-radius: var(--radius-sm);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: var(--bg-tertiary);
+      color: var(--text-main);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      outline: none;
+      min-width: 200px;
+    }
+
+    .search-input:focus {
+      border-color: var(--text-accent);
+    }
+
+    /* Tree View Styling */
+    .tree-container {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .tree-node-wrapper {
+      margin-left: 24px;
+      position: relative;
+    }
+
+    .tree-node-wrapper::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: -16px;
+      bottom: 0;
+      width: 2px;
+      background: var(--border-color);
+    }
+
+    .tree-node-wrapper:last-child::before {
+      bottom: auto;
+      height: 32px;
+    }
+
+    .tree-node-item {
+      position: relative;
+      margin: 10px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tree-node-item::before {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: -16px;
+      width: 14px;
+      height: 2px;
+      background: var(--border-color);
+    }
+
+    .node-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      user-select: none;
+      width: fit-content;
+      max-width: 100%;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .node-header:hover {
+      border-color: var(--text-accent);
+      transform: translateX(2px);
+    }
+
+    .node-header.root-node {
+      background: linear-gradient(135deg, #0284c7, #0f766e);
+      color: white;
+      border: none;
+      font-size: 1.05rem;
+      font-weight: 800;
+      padding: 10px 20px;
+    }
+
+    .node-header.phase-node {
+      background: var(--bg-secondary);
+      border-left: 4px solid var(--text-accent);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .node-header.exam-node {
+      border-left: 4px solid var(--subject-color);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .node-header.module-node {
+      background: rgba(30, 41, 59, 0.6);
+      border-left: 3px solid var(--subject-color);
+      font-size: 0.85rem;
+    }
+
+    .node-header.task-node {
+      background: transparent;
+      border: none;
+      padding: 4px 0;
+      box-shadow: none;
+    }
+
+    .node-header.task-node:hover {
+      transform: none;
+    }
+
+    .collapse-icon {
+      font-size: 0.75rem;
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s;
+    }
+
+    .collapsed .collapse-icon {
+      transform: rotate(-90deg);
+    }
+
+    .node-children {
+      display: block;
+    }
+
+    .collapsed > .node-children {
+      display: none;
+    }
+
+    .node-tag {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+
+    .node-tag.highlight {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+    }
+
+    .node-tag.s3-tag {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+      border: 1px solid rgba(168, 85, 247, 0.4);
+    }
+
+    .node-details-btn {
+      font-size: 0.7rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--text-accent);
+      border: none;
+      cursor: pointer;
+      margin-left: 6px;
+    }
+
+    .node-details-btn:hover {
+      background: rgba(56, 189, 248, 0.3);
+    }
+
+    /* Task Item Checkbox Styling */
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      margin: 4px 0;
+      font-size: 0.82rem;
+      width: fit-content;
+      max-width: 100%;
+      cursor: pointer;
+    }
+
+    .task-item:hover {
+      border-color: var(--text-accent);
+    }
+
+    .task-item.completed {
+      opacity: 0.6;
+      background: rgba(30, 41, 59, 0.4);
+      text-decoration: line-through;
+    }
+
+    .task-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: #0284c7;
+      cursor: pointer;
+    }
+
+    .task-category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .cat-learn { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .cat-practice { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+    .cat-pyq { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+    .cat-rev { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
+    .cat-formula { background: rgba(236, 72, 153, 0.2); color: #f472b6; }
+
+    /* Day-by-Day Table View */
+    .table-container {
+      display: none;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    .table-container.active {
+      display: block;
+    }
+
+    .agenda-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    .agenda-table th {
+      background: var(--bg-tertiary);
+      color: var(--text-main);
+      padding: 12px;
+      border-bottom: 2px solid var(--border-color);
+      font-weight: 700;
+    }
+
+    .agenda-table td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+
+    .agenda-table tr:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .agenda-table tr.highlight-day {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 4px solid #38bdf8;
+    }
+
+    .agenda-table tr.exam-row {
+      background: rgba(239, 68, 68, 0.08);
+      border-left: 4px solid #ef4444;
+    }
+
+    /* Slide-Over Side Drawer for Syllabus & Notes */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: -550px;
+      width: 520px;
+      max-width: 90vw;
+      height: 100vh;
+      background: var(--bg-secondary);
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+      z-index: 101;
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      border-left: 1px solid var(--border-color);
+    }
+
+    .drawer.open {
+      right: 0;
+    }
+
+    .drawer-header {
+      padding: 20px 24px;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .drawer-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .drawer-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .drawer-close:hover {
+      color: var(--text-main);
+    }
+
+    .drawer-content {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      font-size: 0.88rem;
+    }
+
+    .detail-card {
+      background: var(--bg-primary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+
+    .detail-card h3 {
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+      color: var(--text-accent);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .syllabus-list {
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .syllabus-list li strong {
+      color: var(--text-main);
+    }
+
+    .pyq-box {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 3px solid #f59e0b;
+      padding: 10px 14px;
+      border-radius: 4px;
+      margin-top: 10px;
+      font-size: 0.82rem;
+    }
+
+    /* Pomodoro Focus Timer Widget */
+    .timer-widget {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .timer-display {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .timer-digits {
+      font-size: 2.2rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: #38bdf8;
+      letter-spacing: -0.02em;
+    }
+
+    .timer-mode {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+      }
+
+      header, .top-controls, .banner, .countdown-ribbon, .view-toolbar, .timer-widget, .drawer, .drawer-overlay {
+        display: none !important;
+      }
+
+      .main-layout {
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .tree-container, .table-container, .overall-card, .timeline-card {
+        border: 1px solid #ccc !important;
+        background: #ffffff !important;
+        box-shadow: none !important;
+        color: #000000 !important;
+        page-break-inside: avoid;
+      }
+
+      .node-header, .task-item {
+        background: #f8fafc !important;
+        color: #000000 !important;
+        border: 1px solid #ddd !important;
+      }
+
+      .node-children {
+        display: block !important;
+      }
+
+      .btn {
+        display: none !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        padding: 12px 16px;
+      }
+      .brand-section h1 {
+        font-size: 1.1rem;
+      }
+      .main-layout {
+        padding: 12px 16px;
+      }
+      .timeline-track {
+        gap: 4px;
+      }
+      .timeline-day {
+        min-width: 70px;
+        padding: 6px 4px;
+      }
+      .day-num {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="header-container">
+      <div class="brand-section">
+        <h1>
+          <span>⚡ MACE AIML (S5 & S3) Exam Master Plan</span>
+          <span class="badge">Nov 2026</span>
+        </h1>
+        <div class="brand-sub">Mar Athanasius College of Engineering • Starting Today: 29-10-2026 • 12 Days to First Exam</div>
+      </div>
+
+      <div class="top-controls">
+        <button class="btn" id="theme-toggle" title="Switch Theme">🌙 Dark</button>
+        <button class="btn" id="expand-all-btn">📂 Expand All</button>
+        <button class="btn" id="collapse-all-btn">📁 Collapse All</button>
+        <button class="btn btn-primary" id="print-btn">🖨️ Print / Export PDF</button>
+        <button class="btn btn-danger" id="reset-progress-btn">🔄 Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Assumptions Banner -->
+  <div class="banner" id="assumption-banner">
+    <div>
+      <strong>📌 Syllabus Fidelity Note:</strong> S5 Course Syllabi (Data Analytics, Big Data Processing, Compiler Design, AAD, AI, IoT, & Labs) are extracted <strong>verbatim</strong> from <code>S5.pdf</code>. S3 Computer Networks (<code>B24CS2T03</code>) on 19 Nov is organized around the MACE S3 Autonomous curriculum (Physical/MAC, Subnetting, Routing, TCP/Congestion, Network Security) with a distinct accent to manage the critical zero-gap bottleneck with AAD on 20 Nov.
+    </div>
+    <button class="banner-close" onclick="document.getElementById('assumption-banner').style.display='none'">&times;</button>
+  </div>
+
+  <!-- Countdown Ribbon -->
+  <div class="countdown-ribbon" id="countdown-bar">
+    <div class="cd-label">⏳ Exam Countdowns:</div>
+    <div class="cd-chip next" id="cd-da">📊 Data Analytics (10 Nov): Calculating...</div>
+    <div class="cd-chip" id="cd-bdp">🐘 Big Data (13 Nov): Calculating...</div>
+    <div class="cd-chip" id="cd-cd">⚙️ Compiler Design (17 Nov): Calculating...</div>
+    <div class="cd-chip urgent" id="cd-cn">🌐 S3 Networks (19 Nov): Calculating...</div>
+    <div class="cd-chip urgent" id="cd-aad">⚠️ AAD (20 Nov - Zero Gap): Calculating...</div>
+    <div class="cd-chip" id="cd-ai">🤖 AI (24 Nov): Calculating...</div>
+    <div class="cd-chip" id="cd-iot">📡 IoT (26 Nov): Calculating...</div>
+    <div class="cd-chip" id="cd-lab">🔬 Labs (04 Dec): Calculating...</div>
+  </div>
+
+  <!-- Main Workspace -->
+  <div class="main-layout">
+
+    <!-- Timeline Ribbon / Calendar Strip -->
+    <div class="timeline-card">
+      <div class="timeline-header">
+        <div class="timeline-title">
+          <span>📅 Examination & Study Timeline Ribbon</span>
+          <span style="font-size:0.75rem; color:var(--text-muted); font-weight:normal;">(Click any day to jump to tasks)</span>
+        </div>
+        <div class="timeline-legend">
+          <div class="legend-item"><div class="legend-color" style="background:#38bdf8;"></div> Today (29 Oct)</div>
+          <div class="legend-item"><div class="legend-color" style="background:#0284c7;"></div> Pre-Exam Prep</div>
+          <div class="legend-item"><div class="legend-color" style="background:#ef4444;"></div> Theory Exam</div>
+          <div class="legend-item"><div class="legend-color" style="background:#f97316;"></div> Zero-Gap Alert</div>
+          <div class="legend-item"><div class="legend-color" style="background:#10b981;"></div> Gap / Buffer Day</div>
+          <div class="legend-item"><div class="legend-color" style="background:#ec4899;"></div> Lab Exams</div>
+        </div>
+      </div>
+      <div class="timeline-track" id="timeline-track">
+        <!-- Dynamically generated timeline days -->
+      </div>
+    </div>
+
+    <!-- Overall Progress Section & Subject Cards -->
+    <div class="progress-section">
+      <div class="overall-card">
+        <div class="overall-meta">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800;">🎯 Master Syllabus Completion</h2>
+            <div style="font-size: 0.8rem; color: var(--text-muted);" id="progress-subtext">0 of 0 tasks completed (0%)</div>
+          </div>
+          <div class="stat-group">
+            <div class="stat-box">
+              <span class="stat-val" id="stat-completed">0</span>
+              <span class="stat-label">Tasks Done</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val" id="stat-remaining">0</span>
+              <span class="stat-label">Remaining</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-val" id="stat-hours">0h</span>
+              <span class="stat-label">Est. Hours Done</span>
+            </div>
+          </div>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="master-progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Subject Progress Grid -->
+      <div class="subject-grid" id="subject-cards-grid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+
+    <!-- Pomodoro Focus Timer & Routine Bar -->
+    <div class="timer-widget">
+      <div class="timer-display">
+        <div class="timer-digits" id="timer-digits">25:00</div>
+        <div>
+          <div class="timer-mode" id="timer-status">🎯 Deep Work Block</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted);">Recommended: 50m Study / 10m Break</div>
+        </div>
+      </div>
+      <div class="timer-controls">
+        <button class="btn btn-primary" id="timer-start-btn">▶️ Start</button>
+        <button class="btn" id="timer-pause-btn">⏸️ Pause</button>
+        <button class="btn" id="timer-reset-btn">🔄 Reset</button>
+        <button class="btn" id="timer-mode-btn">⚡ 50m Mode</button>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:0.78rem; color:var(--text-muted);">Daily Target:</span>
+        <select id="hours-target-select" class="btn" style="padding:4px 8px; font-size:0.8rem;">
+          <option value="7.5" selected>7.5 Hours (Standard Retention)</option>
+          <option value="9.0">9.0 Hours (Power Sprint)</option>
+          <option value="6.0">6.0 Hours (Essential Core)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- View Switcher & Search Bar -->
+    <div class="view-toolbar">
+      <div class="view-tabs">
+        <button class="tab-btn active" id="tab-tree-btn">🌲 Interactive Tree Flowchart</button>
+        <button class="tab-btn" id="tab-table-btn">📅 Day-by-Day Agenda</button>
+      </div>
+
+      <div class="filter-group">
+        <input type="text" id="task-search" class="search-input" placeholder="🔍 Search topics, algorithms, modules...">
+        <select id="subject-filter" class="btn" style="padding:6px 10px; font-size:0.82rem;">
+          <option value="all">All Subjects</option>
+          <option value="da">Data Analytics</option>
+          <option value="bdp">Big Data</option>
+          <option value="cd">Compiler Design</option>
+          <option value="cn">S3 Computer Networks</option>
+          <option value="aad">Algorithm Analysis (AAD)</option>
+          <option value="ai">Artificial Intelligence</option>
+          <option value="iot">Internet of Things</option>
+          <option value="lab">Lab Exams</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Tree-Structured Flowchart View -->
+    <div class="tree-container" id="tree-view">
+      <div class="tree-node-item">
+        <div class="node-header root-node" id="root-node">
+          <span class="collapse-icon">▼</span>
+          <span>🎯 Nov 2026 Exams - Master Strategy Tree</span>
+          <span class="node-tag" style="background:rgba(255,255,255,0.25); color:white;">MACE Autonomous</span>
+        </div>
+
+        <div class="node-children" id="root-children">
+          <!-- Phase 1: Pre-Exam Prep -->
+          <div class="tree-node-wrapper">
+            <div class="tree-node-item" id="phase-1-node">
+              <div class="node-header phase-node" onclick="toggleCollapse(this)">
+                <span class="collapse-icon">▼</span>
+                <span>📌 Phase 1: Pre-Exam Sprint (29 Oct – 09 Nov 2026)</span>
+                <span class="node-tag">12 Days Active Window</span>
+                <span class="node-tag" style="background:rgba(56,189,248,0.2); color:#38bdf8;">Goal: 85% AAD & CN Upfront</span>
+              </div>
+              <div class="node-children" id="phase-1-children">
+                <!-- Day-by-day sub-branches will be generated here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 2: Theory Exam Period -->
+          <div class="tree-node-wrapper">
+            <div class="tree-node-item" id="phase-2-node">
+              <div class="node-header phase-node" onclick="toggleCollapse(this)">
+                <span class="collapse-icon">▼</span>
+                <span>⚡ Phase 2: Exam Period & Targeted Gap Revisions (10 Nov – 26 Nov 2026)</span>
+                <span class="node-tag">7 Theory Papers</span>
+                <span class="node-tag highlight">Includes 19-20 Nov Zero-Gap</span>
+              </div>
+              <div class="node-children" id="phase-2-children">
+                <!-- 7 Exam branches generated here -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Phase 3: Lab Exams -->
+          <div class="tree-node-wrapper">
+            <div class="tree-node-item" id="phase-3-node">
+              <div class="node-header phase-node" onclick="toggleCollapse(this)">
+                <span class="collapse-icon">▼</span>
+                <span>🔬 Phase 3: Practical Lab Examinations (04 Dec – 11 Dec 2026)</span>
+                <span class="node-tag">Data Analytics Lab & ML Lab</span>
+              </div>
+              <div class="node-children" id="phase-3-children">
+                <!-- Practical lab branches generated here -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Day-by-Day Table View -->
+    <div class="table-container" id="table-view">
+      <table class="agenda-table">
+        <thead>
+          <tr>
+            <th style="width:110px;">Date & Day</th>
+            <th style="width:160px;">Primary Subject & Module</th>
+            <th>Planned Study Topics (Strictly from S5.pdf)</th>
+            <th style="width:140px;">Daily Strategy</th>
+            <th style="width:80px;">Target</th>
+            <th style="width:90px;">Status</th>
+          </tr>
+        </thead>
+        <tbody id="agenda-table-body">
+          <!-- Dynamically populated rows -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- Slide-Over Side Drawer for Syllabus Topics & PYQs -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+  <div class="drawer" id="side-drawer">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-title" id="drawer-title">Module Details</div>
+        <div style="font-size:0.75rem; color:var(--text-muted);" id="drawer-subtitle">S5 Syllabus Reference</div>
+      </div>
+      <button class="drawer-close" onclick="closeDrawer()">&times;</button>
+    </div>
+    <div class="drawer-content" id="drawer-content">
+      <!-- Populated via openDrawer(id) -->
+    </div>
+  </div>
+
+  <!-- Audio Chime for Timer (Base64 WebAudio synthesized) -->
+  <script>
+    // --- Master Data Store ---
+    // All topics strictly matching S5.pdf and MACE November 2026 notifications.
+    const SUBJECTS = {
+      da: {
+        id: "da",
+        code: "B24CD3T01",
+        name: "Data Analytics",
+        slot: "S5 Slot A",
+        date: "2026-11-10",
+        day: "Tuesday",
+        time: "09:30 AM – 12:30 PM",
+        color: "var(--color-da)",
+        hex: "#06b6d4",
+        difficulty: "Moderate-High",
+        credits: 4,
+        hours: 45,
+        modules: [
+          {
+            num: 1,
+            title: "Introduction to Data Analytics",
+            hours: 6,
+            topics: [
+              "Analytics process model & analytical model requirements",
+              "Overview of the Data Analytics Life Cycle",
+              "Association of two variables: discrete, ordinal, and continuous variables",
+              "Probability calculus and probability distributions",
+              "Basics of hypothesis testing",
+              "Proximity measures: data objects, attribute types, dissimilarity and similarity measures",
+              "Uncomputability – Halting problem"
+            ],
+            pyqs: [
+              "Define the data analytics life cycle. List any two key stages. (3 marks)",
+              "Distinguish between discrete, ordinal, and continuous variables with examples. (3 marks)",
+              "Explain proximity measures: similarity and dissimilarity. (6 marks)",
+              "Explain the analytics process model and its components. (8 marks)"
+            ]
+          },
+          {
+            num: 2,
+            title: "Statistical Foundations and Data Preprocessing",
+            hours: 10,
+            topics: [
+              "Summarizing the Distribution of Two Discrete Variables",
+              "Contingency Tables for Discrete Data",
+              "Joint, Marginal and Conditional Frequency Distributions",
+              "Measures of central tendency & dispersion: Mean, Median, Range, Quartiles, Variance, Standard Deviation, IQR",
+              "Data Preprocessing: Cleaning, Integration, Reduction",
+              "Overview of data analytics tools and environments (R, Python, notebooks, spreadsheets)"
+            ],
+            pyqs: [
+              "What is a contingency table? Give an example. (3 marks)",
+              "Explain IQR (Interquartile Range). How is it computed? (3 marks)",
+              "Explain data cleaning, data integration, and data reduction with examples. (8 marks)",
+              "Describe measures of central tendency and dispersion. (8 marks)"
+            ]
+          },
+          {
+            num: 3,
+            title: "Frequent Pattern Mining & Clustering",
+            hours: 10,
+            topics: [
+              "Mining Frequent Patterns - Discretization, Transformation, Associations, Correlations",
+              "Apriori Algorithm (Apriori principle, candidate generation, pruning)",
+              "Classification: General approach, Attribute selection measures",
+              "Naïve Bayesian Classification",
+              "Clustering: K-Means algorithm",
+              "Hierarchical Clustering: Agglomerative versus Divisive"
+            ],
+            pyqs: [
+              "What is the Apriori principle? (3 marks)",
+              "Differentiate between K-Means clustering and hierarchical clustering. (3 marks)",
+              "Explain the Apriori algorithm with a suitable example. (6 marks)",
+              "Compare K-Means clustering with agglomerative clustering. (8 marks)"
+            ]
+          },
+          {
+            num: 4,
+            title: "Introduction to Neural Networks",
+            hours: 9,
+            topics: [
+              "Biological Neuron and Perceptron model",
+              "Multilayer Neural Networks architecture",
+              "Activation functions: Sign, Sigmoid, Tanh, ReLU, leaky ReLU, Hard Tanh, Softmax",
+              "Loss functions & gradient descent",
+              "Training a Neural Network with Backpropagation (derivation & weight updates)",
+              "Practical issues: Overfitting, Underfitting, Hyperparameters and Validation sets"
+            ],
+            pyqs: [
+              "What is an activation function? Mention any two commonly used activation functions. (3 marks)",
+              "Explain the architecture of a multilayer neural network and the role of backpropagation. (8 marks)",
+              "Discuss practical issues in neural network training: overfitting, underfitting, hyperparameters, validation sets. (6 marks)"
+            ]
+          },
+          {
+            num: 5,
+            title: "Introduction to Information Retrieval",
+            hours: 10,
+            topics: [
+              "Text Processing: Data Acquisition, Text Extraction, Clean-up, Pre-processing, Feature Engineering, Modeling, Evaluation",
+              "Text Representation: Vector Space Models",
+              "Basic Vectorization Approaches: One-Hot Encoding, Bag of Words, Bag of N-Grams, TF-IDF",
+              "Distributed Representations: Word Embeddings, Doc2Vec",
+              "Boolean retrieval, inverted index, processing Boolean queries, tokenization, stemming, phrase queries"
+            ],
+            pyqs: [
+              "Explain TF-IDF with a simple example. (3 marks)",
+              "Compare one-hot encoding, Bag of Words, and TF-IDF. (6 marks)",
+              "Explain vector space model for information retrieval. (9 marks)",
+              "Describe tokenization, stemming, and phrase queries. (5 marks)"
+            ]
+          }
+        ]
+      },
+
+      bdp: {
+        id: "bdp",
+        code: "B24AM3T01",
+        name: "Big Data Processing",
+        slot: "S5 Slot B",
+        date: "2026-11-13",
+        day: "Friday",
+        time: "09:30 AM – 12:30 PM",
+        color: "var(--color-bdp)",
+        hex: "#3b82f6",
+        difficulty: "Moderate",
+        credits: 4,
+        hours: 45,
+        modules: [
+          {
+            num: 1,
+            title: "Introduction to Big Data & Ecosystem",
+            hours: 9,
+            topics: [
+              "Evolution of Big Data and Big Data Characteristics (5Vs)",
+              "History of Hadoop, RDBMS vs Big Data systems",
+              "Comparison of Hadoop with other systems",
+              "Hadoop Ecosystem overview",
+              "Core Components: HDFS, Programming Model, High level abstractions, Coordination, Enterprise Data Integration",
+              "Applications & Use cases: Web search indexing"
+            ],
+            pyqs: [
+              "Define Big Data and list any three characteristics. (3 marks)",
+              "Differentiate between RDBMS and Big Data systems. (3 marks)",
+              "With a neat diagram explain the core components of Hadoop Ecosystem. (12 marks)"
+            ]
+          },
+          {
+            num: 2,
+            title: "HDFS and HBase",
+            hours: 9,
+            topics: [
+              "HDFS Architecture and Design, Blocks, NameNodes and DataNodes",
+              "HDFS Federation and High Availability (HDFS Failover Architecture)",
+              "Using HDFS Files & Basic File System Operations",
+              "Hadoop Specific File Types (SequenceFiles, Avro, Parquet)",
+              "Anatomy of a File Read and File Write in HDFS",
+              "HBase: Architecture, Data Model, HBase Schema Design"
+            ],
+            pyqs: [
+              "What is the role of NameNode in HDFS? (3 marks)",
+              "Explain HDFS Architecture with a neat diagram. (8 marks)",
+              "Explain the anatomy of a file read and file write. (8 marks)",
+              "Explain the data model and architecture of HBase. (10 marks)"
+            ]
+          },
+          {
+            num: 3,
+            title: "MapReduce Programming",
+            hours: 9,
+            topics: [
+              "Data Processing with MapReduce: Execution Pipeline",
+              "Runtime Coordination and Task Management in MapReduce",
+              "Designing MapReduce implementations: Parallel processing framework",
+              "Face Recognition example using MapReduce",
+              "Simple Data Processing: Inverted Indexes example",
+              "Road Enrichment example and Link Elevation example",
+              "MapReduce Design Gotchas"
+            ],
+            pyqs: [
+              "What is a Mapper function in MapReduce? (3 marks)",
+              "Illustrate the execution pipeline of MapReduce job using word count. (8 marks)",
+              "Discuss in detail about Road Enrichment example. (8 marks)",
+              "Explain common MapReduce Design Gotchas. (5 marks)"
+            ]
+          },
+          {
+            num: 4,
+            title: "Stream Data Model and Hive",
+            hours: 9,
+            topics: [
+              "Introduction to Stream: Concepts, Stream Data Model & Architecture",
+              "Sampling Data in a Stream, Filtering Streams, Counting Distinct Elements",
+              "Hive Features, Architecture, Data types and file formats",
+              "Primitive and Collection data types in Hive",
+              "HiveQL: Creating tables, Dropping tables, Alter table, Partitioning & Bucketing"
+            ],
+            pyqs: [
+              "What is stream data? Give an example. (3 marks)",
+              "List three features of Hive. (3 marks)",
+              "Explain in detail the Stream Data Model and its architecture. (9 marks)",
+              "Write the syntax to create a table and partition in Hive. (5 marks)"
+            ]
+          },
+          {
+            num: 5,
+            title: "Pig and Spark",
+            hours: 9,
+            topics: [
+              "Pig Data Model, Pig Latin: Structure, Operators, Functions",
+              "Spark: History, Storage layers for Spark, Core Spark concepts",
+              "Resilient Distributed Datasets (RDD) basics and characteristics",
+              "RDD Operations: Transformations (map, filter, flatMap) vs Actions (count, collect, reduce)",
+              "Spark Applications and Architecture (Driver, Cluster Manager, Executors)"
+            ],
+            pyqs: [
+              "What is Pig Latin? (3 marks)",
+              "Define RDD in Spark and mention its two characteristics. (3 marks)",
+              "Write about Pig Latin Structure and Functions. (10 marks)",
+              "Draw the Spark architecture and explain the role of different components. (8 marks)"
+            ]
+          }
+        ]
+      },
+
+      cd: {
+        id: "cd",
+        code: "B24CS3T03",
+        name: "Compiler Design",
+        slot: "S5 Slot C",
+        date: "2026-11-17",
+        day: "Tuesday",
+        time: "09:30 AM – 12:30 PM",
+        color: "var(--color-cd)",
+        hex: "#ef4444",
+        difficulty: "Very High",
+        credits: 4,
+        hours: 45,
+        modules: [
+          {
+            num: 1,
+            title: "Compiler Architecture & Lexical Analysis",
+            hours: 9,
+            topics: [
+              "Analysis of source program: Analysis & Synthesis phases",
+              "Phases of a compiler (Lexical, Syntax, Semantic, Intermediate code, Optimizer, Code Gen)",
+              "Compiler writing tools and Bootstrapping",
+              "Role of Lexical Analyzer, Input Buffering (Buffer Pairs, Sentinels)",
+              "Specification of Tokens (Regular Expressions) & Recognition of Tokens (Finite Automata)"
+            ],
+            pyqs: [
+              "Distinguish between compiler and interpreter. (3 marks)",
+              "Explain lexical analyzer role and input buffering techniques. (8 marks)",
+              "With a neat diagram, explain all phases of a compiler. (8 marks)",
+              "Discuss bootstrapping and its importance in compiler construction. (6 marks)"
+            ]
+          },
+          {
+            num: 2,
+            title: "Syntax Analysis & Top-Down Parsing",
+            hours: 9,
+            topics: [
+              "Role of Syntax Analyzer, Syntax error handling strategies",
+              "Context Free Grammars (CFGs), Derivation and Parse Trees, Ambiguity elimination",
+              "Grammar transformations: Eliminating left recursion, Left factoring",
+              "Top-Down Parsing: Recursive Descent parsing",
+              "FIRST and FOLLOW computation algorithms",
+              "Predictive Parsing: LL(1) Grammars and Parsing Table construction"
+            ],
+            pyqs: [
+              "Differentiate between top-down and bottom-up parsing. (3 marks)",
+              "Write the advantages of predictive parsing over recursive descent parsing. (3 marks)",
+              "Eliminate left recursion and left factor the given grammar. (8 marks)",
+              "Explain LL(1) parsing with parse table construction. (6 marks)"
+            ]
+          },
+          {
+            num: 3,
+            title: "Bottom-Up Parsing (LR Parsers)",
+            hours: 9,
+            topics: [
+              "Bottom-Up Parsing: Handle Pruning, Shift-Reduce parsing",
+              "Operator precedence parsing (Concept only)",
+              "LR Parsing: SLR Grammar, LR(0) items, Augmented Grammar",
+              "Canonical collection of LR(0) items & SLR Parser Table construction",
+              "Constructing Canonical LR (CLR / LR(1)) parsing tables",
+              "Constructing LALR Parsing Tables and LALR parser implementation"
+            ],
+            pyqs: [
+              "Define handle and handle pruning in bottom-up parsing. (3 marks)",
+              "Explain shift-reduce parsing with an example. (8 marks)",
+              "Construct an SLR parse table for a given grammar. (6 marks)",
+              "Compare SLR, LALR and Canonical LR parsers. (8 marks)"
+            ]
+          },
+          {
+            num: 4,
+            title: "Syntax Directed Translation & Intermediate Code",
+            hours: 9,
+            topics: [
+              "Syntax Directed Translation (SDT), Syntax Directed Definitions (SDD)",
+              "S-Attributed Definitions vs L-Attributed Definitions",
+              "Type System, Type Expressions, Static and Dynamic Type Checking",
+              "Intermediate Languages: Syntax Trees, Directed Acyclic Graphs (DAGs)",
+              "Three-Address Code (3AC): Types, Quadruples, Triples, Indirect Triples"
+            ],
+            pyqs: [
+              "Differentiate between S-attributed and L-attributed definitions. (3 marks)",
+              "Define quadruples and triples with examples. (3 marks)",
+              "Explain construction of three-address code from SDD. (8 marks)",
+              "Describe storage organization and activation records. (6 marks)"
+            ]
+          },
+          {
+            num: 5,
+            title: "Code Optimization & Code Generation",
+            hours: 9,
+            topics: [
+              "Opportunities and scope of code optimization",
+              "Local Optimization: Local Value Numbering (LVN), Tree-Height Balancing",
+              "Regional Optimization: Superlocal Value Numbering, Loop Unrolling",
+              "Global Optimization: Live Sets, Finding Uninitialized Variables, Global Code Placement",
+              "Code Generation: Issues in design, Target language, Simple code generator algorithm"
+            ],
+            pyqs: [
+              "What is peephole optimization? Give an example. (3 marks)",
+              "What is local value numbering? Explain briefly with a small example. (3 marks)",
+              "Differentiate machine-dependent and machine-independent optimizations. (8 marks)",
+              "Explain a simple algorithm for code generation from three-address code. (6 marks)"
+            ]
+          }
+        ]
+      },
+
+      cn: {
+        id: "cn",
+        code: "B24CS2T03",
+        name: "Computer Networks",
+        slot: "S3 Slot D",
+        date: "2026-11-19",
+        day: "Thursday",
+        time: "09:30 AM – 12:30 PM",
+        color: "var(--color-cn)",
+        hex: "#a855f7",
+        difficulty: "High (S3 Backlog/Regular Track)",
+        credits: 4,
+        hours: 45,
+        modules: [
+          {
+            num: 1,
+            title: "Data Link Layer & MAC",
+            hours: 9,
+            topics: [
+              "Layered Architecture (OSI vs TCP/IP model)",
+              "Framing techniques (Character count, Byte stuffing, Bit stuffing)",
+              "Error Detection & Correction: Parity, Checksum, CRC (Cyclic Redundancy Check)",
+              "Flow Control Protocols: Stop-and-Wait, Go-Back-N, Selective Repeat ARQ",
+              "MAC Protocols: Pure ALOHA, Slotted ALOHA, CSMA, CSMA/CD, CSMA/CA, Ethernet"
+            ],
+            pyqs: [
+              "Differentiate Go-Back-N and Selective Repeat ARQ in terms of window size and efficiency. (7 marks)",
+              "Calculate CRC for given dataword and polynomial generator. (7 marks)",
+              "Explain the working of CSMA/CD protocol with flow chart. (7 marks)"
+            ]
+          },
+          {
+            num: 2,
+            title: "Network Layer & IP Addressing",
+            hours: 9,
+            topics: [
+              "Network Layer design issues, Store-and-forward packet switching",
+              "IPv4 Addressing: Classful addressing, Subnetting, Supernetting, CIDR notation",
+              "IPv4 Packet Header format and fragmentation",
+              "Address Resolution Protocol (ARP), RARP, DHCP, ICMP, NAT",
+              "IPv6 Addressing and comparison with IPv4"
+            ],
+            pyqs: [
+              "A block of IP addresses is given. Perform subnetting into 4 equal subnets. (8 marks)",
+              "Explain the header format of IPv4 packet with neat diagram. (7 marks)",
+              "Explain how ARP and DHCP protocols work in local networks. (7 marks)"
+            ]
+          },
+          {
+            num: 3,
+            title: "Routing Algorithms",
+            hours: 9,
+            topics: [
+              "Routing principles: Static vs Dynamic routing",
+              "Shortest Path Routing: Dijkstra’s algorithm",
+              "Distance Vector Routing (DVR) - Bellman-Ford & Count-to-Infinity problem",
+              "Link State Routing (LSR) - Reliable flooding and link state packets",
+              "Hierarchical Routing, Internet Routing Protocols: RIP, OSPF, BGP"
+            ],
+            pyqs: [
+              "Apply Dijkstra's shortest path routing algorithm for a 6-node network. (7 marks)",
+              "Explain Count-to-Infinity problem in Distance Vector Routing and solutions. (7 marks)",
+              "Compare OSPF and BGP routing protocols. (7 marks)"
+            ]
+          },
+          {
+            num: 4,
+            title: "Transport Layer Protocols",
+            hours: 9,
+            topics: [
+              "Transport Layer services: Multiplexing and Demultiplexing",
+              "User Datagram Protocol (UDP): Header format and applications",
+              "Transmission Control Protocol (TCP): Segment structure, 3-way handshake connection establishment, Termination",
+              "TCP Flow Control using Sliding Window",
+              "TCP Congestion Control: AIMD, Slow Start, Congestion Avoidance, Fast Retransmit, Fast Recovery"
+            ],
+            pyqs: [
+              "Explain TCP 3-way handshake connection establishment and graceful release. (8 marks)",
+              "Describe the four phases of TCP Congestion Control with window diagram. (8 marks)",
+              "Differentiate UDP and TCP in terms of reliability, overhead, and use cases. (6 marks)"
+            ]
+          },
+          {
+            num: 5,
+            title: "Application Layer & Security",
+            hours: 9,
+            topics: [
+              "Domain Name System (DNS): Hierarchical namespace, Resource records, Resolution",
+              "World Wide Web: HTTP and HTTPS, Persistent vs Non-persistent connections",
+              "Electronic Mail: SMTP, POP3, IMAP",
+              "File Transfer: FTP control and data connections",
+              "Network Security Basics: Symmetric vs Asymmetric key cryptography (RSA), Firewalls, SSL/TLS"
+            ],
+            pyqs: [
+              "Explain DNS resolution process (recursive and iterative) with diagram. (7 marks)",
+              "Explain RSA public key encryption algorithm with a numerical example. (7 marks)",
+              "Differentiate HTTP 1.0, 1.1 and persistent HTTP connections. (6 marks)"
+            ]
+          }
+        ]
+      },
+
+      aad: {
+        id: "aad",
+        code: "B24CS3T04",
+        name: "Algorithm Analysis and Design",
+        slot: "S5 Slot D",
+        date: "2026-11-20",
+        day: "Friday",
+        time: "09:30 AM – 12:30 PM",
+        color: "var(--color-aad)",
+        hex: "#f97316",
+        difficulty: "Extremely High (CRITICAL ZERO-GAP)",
+        credits: 4,
+        hours: 45,
+        modules: [
+          {
+            num: 1,
+            title: "Introduction to Algorithm Analysis & Recurrences",
+            hours: 9,
+            topics: [
+              "Characteristics of Algorithms, Criteria for Analysing Algorithms",
+              "Time and Space Complexity: Best, Worst and Average Case",
+              "Asymptotic Notations: Big-Oh (O), Big-Omega (Ω), Big-Theta (Θ), Little-oh (o), Little-Omega (ω) and properties",
+              "Classifying functions by asymptotic growth rate, Code complexity calculations",
+              "Solving Recurrence Equations: Iteration Method, Recursion Tree Method, Substitution Method, Master's Theorem"
+            ],
+            pyqs: [
+              "Arrange functions in increasing order of growth rate: n^3, 2^n, log n^3, 2^100, n^2 log n, n^n, log n, 2^log n. (3 marks)",
+              "State Master's Theorem. Solve T(n) = 8T(n/2) + 100n^2 and T(n) = 2T(n/2) + 10n. (7 marks)",
+              "Solve T(n) = T(n/3) + T(2n/3) + n using Recursion Tree method. (7 marks)"
+            ]
+          },
+          {
+            num: 2,
+            title: "Advanced Data Structures & Graph Algorithms",
+            hours: 10,
+            topics: [
+              "Self Balancing Trees: AVL Trees (Insertion & Deletion operations with all rotations in detail)",
+              "Disjoint Sets: Disjoint set operations, Union and Find algorithms, Linked list representation",
+              "Graph Algorithms: BFS and DFS traversals & complexity analysis",
+              "Classification of edges in DFS (Tree, Back, Forward, Cross edges)",
+              "Strongly Connected Components (SCC) of Directed Graph, Topological Sorting"
+            ],
+            pyqs: [
+              "Explain AVL rotations (LL, RR, LR, RL) with examples. Perform insertion of keys. (7 marks)",
+              "Write DFS algorithm, analyze time complexity, illustrate edge classification. (7 marks)",
+              "Find Strongly Connected Components and Topological orderings of a DAG. (7 marks)"
+            ]
+          },
+          {
+            num: 3,
+            title: "Divide & Conquer and Greedy Strategy",
+            hours: 8,
+            topics: [
+              "Divide & Conquer: Control Abstraction, 2-way Merge Sort & analysis",
+              "Strassen's Algorithm for Matrix Multiplication & recurrence analysis",
+              "Greedy Strategy: Control Abstraction",
+              "Fractional Knapsack Problem and Greedy algorithm",
+              "Minimum Cost Spanning Tree (MST): Kruskal's Algorithm & Prim's Algorithm analysis",
+              "Single Source Shortest Path: Dijkstra's Algorithm analysis"
+            ],
+            pyqs: [
+              "State Fractional Knapsack Problem, write Greedy algorithm, solve for given weights/profits. (7 marks)",
+              "Write pseudo code for Dijkstra's algorithm. Compute shortest distances for given graph. (7 marks)",
+              "Explain Strassen's matrix multiplication and how it reduces complexity from O(n^3) to O(n^2.81). (7 marks)"
+            ]
+          },
+          {
+            num: 4,
+            title: "Dynamic Programming, Backtracking, Branch & Bound",
+            hours: 8,
+            topics: [
+              "Dynamic Programming: Control Abstraction, Principle of Optimality",
+              "Matrix Chain Multiplication (MCM) - Algorithm & recurrence analysis",
+              "All Pairs Shortest Path: Floyd-Warshall Algorithm & optimal substructure",
+              "Backtracking: Control Abstraction, The N-Queens Problem (4-Queens state space)",
+              "Branch and Bound: Control Abstraction, Travelling Salesman Problem (TSP) state space tree"
+            ],
+            pyqs: [
+              "Find optimal parenthesization of matrix chain product 4x10, 10x3, 3x12, 12x20 using DP. (9 marks)",
+              "Write Floyd-Warshall algorithm and analyze its complexity. (5 marks)",
+              "Explain Backtracking using 4-Queens problem. (7 marks)",
+              "Define TSP. Apply Branch and Bound to solve TSP for given cost matrix. (7 marks)"
+            ]
+          },
+          {
+            num: 5,
+            title: "Complexity Theory & Randomized Algorithms",
+            hours: 10,
+            topics: [
+              "Tractable and Intractable Problems, Complexity Classes: P, NP, NP-Hard, NP-Complete",
+              "NP-Completeness proofs: Clique Problem and Vertex Cover Problem",
+              "Approximation Algorithms: Bin Packing Problem (First Fit Decreasing), Graph Coloring",
+              "Randomized Algorithms: Definitions of Monte Carlo and Las Vegas algorithms",
+              "Randomized version of Quick Sort algorithm with expected running time analysis"
+            ],
+            pyqs: [
+              "Differentiate between P and NP problems. (3 marks)",
+              "Prove that the Clique Problem / Vertex Cover is NP-Complete. (7 marks)",
+              "Explain Bin Packing problem and First Fit Decreasing strategy. (7 marks)",
+              "Differentiate Las Vegas and Monte Carlo algorithms. Analyze Randomized Quicksort. (9 marks)"
+            ]
+          }
+        ]
+      },
+
+      ai: {
+        id: "ai",
+        code: "B24CS3T05",
+        name: "Artificial Intelligence",
+        slot: "S5 Slot E",
+        date: "2026-11-24",
+        day: "Tuesday",
+        time: "09:30 AM – 12:30 PM",
+        color: "var(--color-ai)",
+        hex: "#10b981",
+        difficulty: "Moderate",
+        credits: 3,
+        hours: 36,
+        modules: [
+          {
+            num: 1,
+            title: "Introduction & Intelligent Agents",
+            hours: 7,
+            topics: [
+              "What is AI, History of AI, Applications & Foundations of AI, Responsible AI",
+              "Intelligent Agents: Agents and Environments, Concept of Rationality",
+              "Nature of Environments: Specifying Task Environment (PEAS description)",
+              "Environment Properties: Fully/Partially Observable, Deterministic/Stochastic, Episodic/Sequential, Static/Dynamic, Discrete/Continuous",
+              "Agent Architectures: Simple reflex, Model-based, Goal-based, Utility-based Agents"
+            ],
+            pyqs: [
+              "Define rationality in the context of intelligent agents. (3 marks)",
+              "Differentiate between static and dynamic environments with examples. (3 marks)",
+              "Describe the PEAS representation for two real-world agents (e.g., automated taxi, medical diagnosis). (7 marks)",
+              "Explain the four agent architectures with neat diagrams. (8 marks)"
+            ]
+          },
+          {
+            num: 2,
+            title: "Problem Solving by Searching",
+            hours: 6,
+            topics: [
+              "Problem formulation, State space, Trade-offs in BFS and DFS",
+              "Uninformed Search: Depth Limited Search (DLS), Iterative Deepening Search (IDS), Performance measures",
+              "Informed (Heuristic) Search: Heuristic functions, Greedy Best-First Search",
+              "A* Search: Algorithm, Admissibility and Consistency conditions for optimality"
+            ],
+            pyqs: [
+              "Differences between BFS and DFS in terms of completeness and optimality. (3 marks)",
+              "What are admissible and consistent heuristics? Show how they affect A*. (7 marks)",
+              "Explain IDS. Why is it preferred over BFS and DFS? (7 marks)"
+            ]
+          },
+          {
+            num: 3,
+            title: "Search in Complex Environments & CSP",
+            hours: 9,
+            topics: [
+              "Adversarial Search: Game playing, Minimax algorithm, Alpha-Beta pruning, Evaluation functions, Cut-off, Move ordering",
+              "Constraint Satisfaction Problems (CSP): Variables, Domains, Constraints",
+              "Example CSPs: Cryptarithmetic Problem (TWO+TWO=FOUR), Map Coloring",
+              "CSP Backtracking Search: MRV heuristic, Degree heuristic, LCV heuristic, Forward Checking",
+              "Constraint Propagation (AC-3), Local Search: Simple Hill Climbing, Simulated Annealing"
+            ],
+            pyqs: [
+              "What is the purpose of evaluation functions and Alpha-Beta pruning in game playing? (7 marks)",
+              "Solve Cryptarithmetic problem (TWO + TWO = FOUR) using backtracking with heuristics. (7 marks)",
+              "Discuss forward checking and constraint propagation in CSP. (7 marks)"
+            ]
+          },
+          {
+            num: 4,
+            title: "Knowledge Representation and Reasoning",
+            hours: 7,
+            topics: [
+              "Knowledge-Based Agents: The Wumpus World environment",
+              "Propositional Logic: Syntax, Semantics, Entailment, Inference, Resolution refutation",
+              "First-Order Logic (FOL): Syntax and Semantics of FOL, Knowledge Representation in FOL",
+              "Inference in FOL: Unification algorithm, Generalized Modus Ponens, Lifting, Forward & Backward chaining, Resolution",
+              "Algorithms for Planning: State Space Search, Planning Graphs"
+            ],
+            pyqs: [
+              "Describe Wumpus World. Why is it a good testbed for logic-based agents? (10 marks)",
+              "Use resolution refutation in Propositional Logic to prove conclusion. (7 marks)",
+              "Explain Unification and Lifting in First-Order Logic with examples. (6 marks)"
+            ]
+          },
+          {
+            num: 5,
+            title: "Towards Modern AI: Symbolic & ML Integration",
+            hours: 7,
+            topics: [
+              "Evolution to Data-Driven AI: Core limitations of symbolic AI approaches",
+              "Machine Learning Paradigms: Supervised, Unsupervised, Reinforcement Learning",
+              "Integration of Search & RL: Modern game playing (AlphaGo combines search with learned value/policy models)",
+              "Ethics & Responsibility: Bias, fairness, societal impact of learned models",
+              "Case Studies: Healthcare, Autonomous Systems, and Intelligent Assistants"
+            ],
+            pyqs: [
+              "Explain the limitations of symbolic AI that led to data-driven learning. (8 marks)",
+              "Discuss how search techniques are integrated with Reinforcement Learning in AlphaGo. (7 marks)",
+              "Discuss ethical and societal issues of AI models: bias and fairness. (7 marks)"
+            ]
+          }
+        ]
+      },
+
+      iot: {
+        id: "iot",
+        code: "B24CS3P13",
+        name: "Internet of Things",
+        slot: "S5 Elective",
+        date: "2026-11-26",
+        day: "Thursday",
+        time: "09:30 AM – 12:30 PM",
+        color: "var(--color-iot)",
+        hex: "#84cc16",
+        difficulty: "Moderate-Low",
+        credits: 3,
+        hours: 36,
+        modules: [
+          {
+            num: 1,
+            title: "Fundamentals of IoT & Architecture",
+            hours: 6,
+            topics: [
+              "What is IoT, Genesis & Evolution of IoT, IoT Impact and Opportunities",
+              "Digitization and Convergence of IT and OT, IoT Challenges",
+              "IoT Network Architecture and Design, Comparing IoT Architectures, Simplified IoT Architecture",
+              "The Core IoT Functional Stack, IoT Data Management and Compute Stack"
+            ],
+            pyqs: [
+              "Define IoT. Explain impact of IoT on digitization and IT/OT convergence. (3 marks)",
+              "Explain Core IoT Functional Stack with neat diagram. (7 marks)",
+              "Discuss IoT Network Architecture and compare different architectural models. (7 marks)"
+            ]
+          },
+          {
+            num: 2,
+            title: "Smart Objects and Connectivity",
+            hours: 7,
+            topics: [
+              "Smart Objects – 'The Things' in IoT, Characteristics of smart objects",
+              "Sensors, Actuators, and their classifications",
+              "Sensor Networks and Connectivity Models",
+              "Communications Criteria: Range, Bandwidth, Power, Topology, Cost",
+              "IoT Access Technologies: IEEE 802.15.4 (Zigbee), IEEE 802.11ah, LoRa / LoRaWAN, NB-IoT, LTE"
+            ],
+            pyqs: [
+              "Differentiate between sensors and actuators with examples. (3 marks)",
+              "Compare IEEE 802.15.4, LoRaWAN, and NB-IoT technologies in terms of range, bandwidth, and power. (8 marks)",
+              "Explain communication criteria for connecting smart objects. (6 marks)"
+            ]
+          },
+          {
+            num: 3,
+            title: "IP and Application Protocols for IoT",
+            hours: 7,
+            topics: [
+              "IP as the IoT Network Layer and Business Case for IP",
+              "Need for Optimization: Constrained devices and constrained networks (6LoWPAN)",
+              "Optimizing IP for IoT: Profiles and Compliance",
+              "Application Protocols for IoT: CoAP (Constrained Application Protocol) architecture & message types",
+              "MQTT (Message Queuing Telemetry Transport): Publish/Subscribe model, QoS levels 0, 1, 2",
+              "Transport Layer: IoT Application Transport methods"
+            ],
+            pyqs: [
+              "Compare MQTT and CoAP in terms of architecture, overhead, and reliability. (8 marks)",
+              "Explain the need for optimizing IP for constrained devices. (7 marks)",
+              "Describe the working of transport layer in IoT communication. (7 marks)"
+            ]
+          },
+          {
+            num: 4,
+            title: "Data and Analytics for IoT",
+            hours: 6,
+            topics: [
+              "Data and Analytics for IoT: Nature of IoT data, Types of IoT data, IoT data life cycle",
+              "Introduction to Machine Learning for IoT: Role of ML, Types of ML used in IoT",
+              "Big Data Analytics Tools and Technologies for IoT",
+              "Edge Analytics and Streaming Analytics vs Cloud Analytics",
+              "Network Analytics, Visualization and Interpretation of IoT data",
+              "IoT Security Overview: Common challenges, Risk analysis concepts"
+            ],
+            pyqs: [
+              "What is edge analytics? How does it differ from cloud-based analytics? (3 marks)",
+              "Explain the role of data analytics in IoT systems with an example. (7 marks)",
+              "Describe how machine learning techniques are applied in IoT data analysis. (8 marks)"
+            ]
+          },
+          {
+            num: 5,
+            title: "Developing IoT Systems & Cloud Services",
+            hours: 10,
+            topics: [
+              "IoT Logical Design using Python",
+              "IoT Physical Devices and Endpoints: Raspberry Pi interfaces (GPIO, SPI, I2C)",
+              "Programming Raspberry Pi with Python: Interfacing Sensors (DHT11/22) and Actuators",
+              "Cloud Storage Models and IoT Cloud Offerings",
+              "Designing RESTful Web APIs for IoT applications",
+              "Cloud Web Services for IoT: AWS IoT Core, ThingSpeak platform",
+              "Case Study: Smart Home or Smart Agriculture Application",
+              "Security and Privacy in IoT System Implementation"
+            ],
+            pyqs: [
+              "List major components of a Raspberry Pi–based IoT system. (3 marks)",
+              "Demonstrate how Raspberry Pi can be programmed to interface a temperature sensor using Python. (7 marks)",
+              "Explain architecture and functioning of cloud services for IoT (AWS IoT / ThingSpeak). (8 marks)",
+              "Explain essential security and privacy considerations in IoT application development. (6 marks)"
+            ]
+          }
+        ]
+      },
+
+      lab: {
+        id: "lab",
+        code: "B24CD3L07 / B24AM3L08",
+        name: "Practical Lab Examinations",
+        slot: "Slots G & H",
+        date: "2026-12-04",
+        endDate: "2026-12-11",
+        day: "Fri - Fri",
+        time: "Lab Timings",
+        color: "var(--color-lab)",
+        hex: "#ec4899",
+        difficulty: "Hands-on Practical & Viva",
+        credits: 4,
+        hours: 30,
+        modules: [
+          {
+            num: 1,
+            title: "Data Analytics Lab (B24CD3L07)",
+            hours: 15,
+            topics: [
+              "Weka tool exploratory data analysis and visualization",
+              "Similarity and dissimilarity computation for numeric & nominal attributes",
+              "Correlation analysis between numeric and nominal attributes",
+              "Information gain evaluation for dataset attributes",
+              "Association rule mining algorithm implementation (Apriori)",
+              "K-Means clustering and Single Linkage hierarchical clustering",
+              "Naïve Bayes classifier implementation",
+              "Outlier detection algorithms and Data Analytics micro-project"
+            ],
+            pyqs: [
+              "Demonstrate EDA on Iris dataset using Weka / Python. (Viva & Execution)",
+              "Implement Apriori algorithm and generate association rules for minimum support 0.3. (Practical output)",
+              "Perform K-Means clustering and evaluate cluster purity. (Practical output)"
+            ]
+          },
+          {
+            num: 2,
+            title: "Machine Learning Lab (B24AM3L08)",
+            hours: 15,
+            topics: [
+              "Linear regression on California Housing dataset",
+              "Polynomial regression on Auto MPG dataset",
+              "Logistic regression using MLE and MAP on Breast Cancer dataset",
+              "Logistic regression with and without feature scaling on Pima Indians Diabetes",
+              "Multilayer Perceptron (MLP) on Wine Quality dataset (hidden layer tuning)",
+              "Multilayer feedforward neural network trained with Backpropagation",
+              "KNN algorithm on Fashion MNIST for image classification",
+              "Activation function comparison (Sigmoid, ReLU, Tanh) on MNIST",
+              "Hyperparameter tuning for neural network on Fashion MNIST",
+              "Hierarchical vs K-Means clustering on Mall Customers dataset",
+              "DBSCAN clustering algorithm on Digits dataset",
+              "Bootstrapping and Cross-Validation on Iris dataset",
+              "Bagging and Boosting on Titanic dataset using ensemble methods",
+              "Bias-Variance trade-off investigation using polynomial regression"
+            ],
+            pyqs: [
+              "Write Python code in VS Code to train an MLP with Backpropagation on Wine Quality. (Practical)",
+              "Demonstrate Bagging and Boosting on Titanic dataset and plot ROC curve. (Practical)",
+              "Explain Bias-Variance tradeoff and effect of polynomial degrees. (Viva)"
+            ]
+          }
+        ]
+      }
+    };
+
+    // --- Master Study Schedule (29 Oct to 11 Dec 2026) ---
+    const SCHEDULE_DAYS = [
+      {
+        date: "2026-10-29",
+        day: "Thursday",
+        type: "prep",
+        phase: 1,
+        title: "Day 1: AAD Foundations & Networks Kickoff",
+        badge: "Prep Day 1",
+        primarySubj: "aad",
+        secondarySubj: "cn",
+        tasks: [
+          { id: "t-1029-1", subj: "aad", mod: 1, cat: "learn", text: "AAD M1: Asymptotic notations (O, Ω, Θ, o, ω) properties & growth rate hierarchy", hrs: 2.0 },
+          { id: "t-1029-2", subj: "aad", mod: 1, cat: "practice", text: "AAD M1: Solving Recurrences: Master's Theorem, Iteration & Recursion Tree", hrs: 2.0 },
+          { id: "t-1029-3", subj: "cn", mod: 1, cat: "learn", text: "CN M1: Framing techniques (bit/byte stuffing) & CRC error detection", hrs: 1.5 },
+          { id: "t-1029-4", subj: "cn", mod: 1, cat: "practice", text: "CN M1: Stop-and-Wait, Go-Back-N, Selective Repeat ARQ window calculations", hrs: 1.5 },
+          { id: "t-1029-5", subj: "aad", mod: 1, cat: "pyq", text: "Self-Test: 3 Master Theorem recurrences + 1 CRC numerical", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-10-30",
+        day: "Friday",
+        type: "prep",
+        phase: 1,
+        title: "Day 2: AVL Rotations & Compiler Lexical Phase",
+        badge: "Prep Day 2",
+        primarySubj: "aad",
+        secondarySubj: "cd",
+        tasks: [
+          { id: "t-1030-1", subj: "aad", mod: 2, cat: "learn", text: "AAD M2: AVL Trees: Insertion/Deletion with LL, RR, LR, RL rotations", hrs: 2.5 },
+          { id: "t-1030-2", subj: "aad", mod: 2, cat: "practice", text: "AAD M2: Disjoint Sets: Union and Find operations (Linked list representation)", hrs: 1.5 },
+          { id: "t-1030-3", subj: "cd", mod: 1, cat: "learn", text: "Compiler M1: Phases of compiler, Input Buffering (buffer pairs, sentinels), Bootstrapping", hrs: 2.0 },
+          { id: "t-1030-4", subj: "cd", mod: 1, cat: "pyq", text: "Compiler M1: Finite automata for identifier token recognition", hrs: 1.0 },
+          { id: "t-1030-5", subj: "aad", mod: 2, cat: "pyq", text: "Self-Test: Construct AVL tree for 7 keys + trace balance factors", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-10-31",
+        day: "Saturday",
+        type: "prep",
+        phase: 1,
+        title: "Day 3: Top-Down Parsing & IP Subnetting",
+        badge: "Prep Day 3 (Buffer)",
+        primarySubj: "cd",
+        secondarySubj: "cn",
+        tasks: [
+          { id: "t-1031-1", subj: "cd", mod: 2, cat: "learn", text: "Compiler M2: CFGs, Ambiguity elimination, Left recursion elimination, Left factoring", hrs: 2.5 },
+          { id: "t-1031-2", subj: "cd", mod: 2, cat: "practice", text: "Compiler M2: FIRST & FOLLOW computation algorithms + LL(1) Table construction", hrs: 2.0 },
+          { id: "t-1031-3", subj: "cn", mod: 2, cat: "learn", text: "CN M2: IPv4/IPv6 addressing, Subnetting, Supernetting, CIDR mask calculations", hrs: 1.5 },
+          { id: "t-1031-4", subj: "all", mod: 0, cat: "rev", text: "Buffer Slot (1.5 hrs): Catch-up on pending AAD/Compiler items + 3-day recap", hrs: 1.0 },
+          { id: "t-1031-5", subj: "cd", mod: 2, cat: "pyq", text: "Self-Test: Eliminate left recursion & construct LL(1) table for 1 grammar", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-01",
+        day: "Sunday",
+        type: "prep",
+        phase: 1,
+        title: "Day 4: Dynamic Programming & Routing Protocols",
+        badge: "Prep Day 4",
+        primarySubj: "aad",
+        secondarySubj: "cn",
+        tasks: [
+          { id: "t-1101-1", subj: "aad", mod: 3, cat: "learn", text: "AAD M3: Divide & Conquer (Strassen's Matrix Mult) & Greedy (Fractional Knapsack, Kruskal/Prim)", hrs: 2.5 },
+          { id: "t-1101-2", subj: "aad", mod: 4, cat: "practice", text: "AAD M4: Matrix Chain Multiplication (MCM) recurrence & Floyd-Warshall All-Pairs Shortest Path", hrs: 2.5 },
+          { id: "t-1101-3", subj: "cn", mod: 3, cat: "learn", text: "CN M3: Distance Vector Routing (Bellman-Ford & Count-to-Infinity) & Link State (Dijkstra)", hrs: 1.5 },
+          { id: "t-1101-4", subj: "aad", mod: 4, cat: "pyq", text: "Self-Test: Compute MCM table for 4 matrices + Dijkstra shortest path trace", hrs: 1.0 }
+        ]
+      },
+      {
+        date: "2026-11-02",
+        day: "Monday",
+        type: "prep",
+        phase: 1,
+        title: "Day 5: Bottom-Up Parsing (LR/SLR/LALR) & Big Data",
+        badge: "Prep Day 5",
+        primarySubj: "cd",
+        secondarySubj: "bdp",
+        tasks: [
+          { id: "t-1102-1", subj: "cd", mod: 3, cat: "learn", text: "Compiler M3: Handle pruning, Shift-reduce parsing, Canonical collection of LR(0) items", hrs: 2.5 },
+          { id: "t-1102-2", subj: "cd", mod: 3, cat: "practice", text: "Compiler M3: SLR, CLR, LALR parse table construction and conflict resolution", hrs: 2.0 },
+          { id: "t-1102-3", subj: "bdp", mod: 1, cat: "learn", text: "BDP M1: Big data 5Vs, Hadoop ecosystem, Core components, HDFS vs RDBMS", hrs: 1.5 },
+          { id: "t-1102-4", subj: "bdp", mod: 2, cat: "learn", text: "BDP M2: HDFS Architecture, NameNode/DataNode, HA failover, File read/write anatomy", hrs: 1.0 },
+          { id: "t-1102-5", subj: "cd", mod: 3, cat: "pyq", text: "Self-Test: Construct SLR(1) parse table for augmented expression grammar", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-03",
+        day: "Tuesday",
+        type: "prep",
+        phase: 1,
+        title: "Day 6: NP-Completeness, TCP Congestion & Buffer",
+        badge: "Prep Day 6 (Buffer)",
+        primarySubj: "aad",
+        secondarySubj: "cn",
+        tasks: [
+          { id: "t-1103-1", subj: "aad", mod: 5, cat: "learn", text: "AAD M5: P, NP, NP-Hard, NP-Complete definitions & Clique / Vertex Cover NP proof", hrs: 2.5 },
+          { id: "t-1103-2", subj: "aad", mod: 4, cat: "practice", text: "AAD M4: N-Queens Backtracking & TSP Branch and Bound state space trees", hrs: 1.5 },
+          { id: "t-1103-3", subj: "cn", mod: 4, cat: "learn", text: "CN M4: TCP 3-way handshake, TCP Sliding Window flow control, Congestion Control (AIMD/Slow Start)", hrs: 1.5 },
+          { id: "t-1103-4", subj: "all", mod: 0, cat: "rev", text: "Buffer Slot: Catch-up on hard derivation sheets for AAD & Compiler", hrs: 1.5 },
+          { id: "t-1103-5", subj: "aad", mod: 5, cat: "pyq", text: "Self-Test: State Vertex Cover problem & prove NP-Completeness via reduction", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-04",
+        day: "Wednesday",
+        type: "prep",
+        phase: 1,
+        title: "Day 7: SDD / Intermediate Code & AI Core Search",
+        badge: "Prep Day 7",
+        primarySubj: "cd",
+        secondarySubj: "ai",
+        tasks: [
+          { id: "t-1104-1", subj: "cd", mod: 4, cat: "learn", text: "Compiler M4: Syntax Directed Translation (SDD), S-attributed vs L-attributed definitions", hrs: 2.5 },
+          { id: "t-1104-2", subj: "cd", mod: 4, cat: "practice", text: "Compiler M4: Three-Address Code: Quadruples, Triples, DAG representations", hrs: 1.5 },
+          { id: "t-1104-3", subj: "ai", mod: 1, cat: "learn", text: "AI M1: PEAS model, Agent environments, Rationality, 4 Agent architectures", hrs: 1.5 },
+          { id: "t-1104-4", subj: "ai", mod: 2, cat: "learn", text: "AI M2: Problem formulation, BFS/DFS trade-offs, Iterative Deepening, A* Search (admissibility)", hrs: 1.5 },
+          { id: "t-1104-5", subj: "cd", mod: 4, cat: "pyq", text: "Self-Test: Generate Quadruples and Triples for arithmetic expression", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-05",
+        day: "Thursday",
+        type: "prep",
+        phase: 1,
+        title: "Day 8: MapReduce, Pig/Spark & IoT Architecture",
+        badge: "Prep Day 8",
+        primarySubj: "bdp",
+        secondarySubj: "iot",
+        tasks: [
+          { id: "t-1105-1", subj: "bdp", mod: 3, cat: "learn", text: "BDP M3: MapReduce execution pipeline, task management, Inverted Index & Road Enrichment", hrs: 2.5 },
+          { id: "t-1105-2", subj: "bdp", mod: 5, cat: "learn", text: "BDP M5: Pig Latin structure/functions, Spark RDD basics, Transformations vs Actions", hrs: 2.0 },
+          { id: "t-1105-3", subj: "iot", mod: 1, cat: "learn", text: "IoT M1: Core IoT Functional Stack, IT/OT convergence, Simplified IoT Architecture", hrs: 1.5 },
+          { id: "t-1105-4", subj: "iot", mod: 2, cat: "learn", text: "IoT M2: Smart objects, Sensors/Actuators, LoRaWAN vs NB-IoT vs IEEE 802.15.4", hrs: 1.0 },
+          { id: "t-1105-5", subj: "bdp", mod: 3, cat: "pyq", text: "Self-Test: Write MapReduce Mapper & Reducer pseudo code for word count", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-06",
+        day: "Friday",
+        type: "prep",
+        phase: 1,
+        title: "Day 9: AI Logic, IoT Protocols & Buffer",
+        badge: "Prep Day 9 (Buffer)",
+        primarySubj: "ai",
+        secondarySubj: "iot",
+        tasks: [
+          { id: "t-1106-1", subj: "ai", mod: 3, cat: "learn", text: "AI M3: Minimax, Alpha-Beta pruning, CSP: Cryptarithmetic (TWO+TWO=FOUR) & Map Coloring", hrs: 2.5 },
+          { id: "t-1106-2", subj: "ai", mod: 4, cat: "learn", text: "AI M4: Wumpus World, Propositional logic resolution, First-Order Logic unification", hrs: 2.0 },
+          { id: "t-1106-3", subj: "iot", mod: 3, cat: "learn", text: "IoT M3: IP optimization (6LoWPAN), MQTT (Pub/Sub & QoS) vs CoAP architecture", hrs: 1.5 },
+          { id: "t-1106-4", subj: "all", mod: 0, cat: "rev", text: "Buffer Slot: Complete pending weekly backlog before dedicated DA pivot", hrs: 1.0 },
+          { id: "t-1106-5", subj: "ai", mod: 3, cat: "pyq", text: "Self-Test: Alpha-Beta pruning tree calculation + Propositional resolution", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-07",
+        day: "Saturday",
+        type: "prep",
+        phase: 1,
+        title: "Day 10: Dedicated Pivot to Data Analytics (M1, M2, M3)",
+        badge: "Exam 1 Focus (T-3 Days)",
+        primarySubj: "da",
+        secondarySubj: "da",
+        tasks: [
+          { id: "t-1107-1", subj: "da", mod: 1, cat: "learn", text: "DA M1: Analytics process model, Life cycle stages, Probability distributions, Hypothesis testing", hrs: 2.5 },
+          { id: "t-1107-2", subj: "da", mod: 2, cat: "practice", text: "DA M2: Contingency tables, Joint/Marginal frequencies, Mean/Median/SD/IQR & Preprocessing", hrs: 2.5 },
+          { id: "t-1107-3", subj: "da", mod: 3, cat: "learn", text: "DA M3: Apriori algorithm step-by-step, Naïve Bayes classifier, K-Means clustering", hrs: 2.0 },
+          { id: "t-1107-4", subj: "da", mod: 1, cat: "pyq", text: "Self-Test: Solve Data Analytics Model Paper Part A (Questions 1 to 6)", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-08",
+        day: "Sunday",
+        type: "prep",
+        phase: 1,
+        title: "Day 11: Data Analytics Deep Pass (M4 & M5) & Model Paper",
+        badge: "Exam 1 Focus (T-2 Days)",
+        primarySubj: "da",
+        secondarySubj: "da",
+        tasks: [
+          { id: "t-1108-1", subj: "da", mod: 4, cat: "practice", text: "DA M4: Perceptron, Multilayer NN, Backpropagation derivation & weight updates, Overfitting", hrs: 3.0 },
+          { id: "t-1108-2", subj: "da", mod: 5, cat: "learn", text: "DA M5: Text representation (One-Hot, BoW, TF-IDF), Boolean retrieval, Inverted index", hrs: 2.5 },
+          { id: "t-1108-3", subj: "da", mod: 0, cat: "pyq", text: "DA Model Paper: Solve full Part B (Questions 11 to 20 from S5.pdf)", hrs: 1.5 },
+          { id: "t-1108-4", subj: "da", mod: 0, cat: "formula", text: "Prepare 1-page condensed formula sheet: Distance metrics, IQR, Backprop update, TF-IDF", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-09",
+        day: "Monday",
+        type: "prep",
+        phase: 1,
+        title: "Day 12: Data Analytics Pre-Exam Eve (Light Day)",
+        badge: "Exam 1 Eve (Light)",
+        primarySubj: "da",
+        secondarySubj: "da",
+        tasks: [
+          { id: "t-1109-1", subj: "da", mod: 0, cat: "rev", text: "DA Final Review: 1-page formula sheet, Data Analytics life-cycle flow, Activation functions", hrs: 2.5 },
+          { id: "t-1109-2", subj: "da", mod: 0, cat: "pyq", text: "Mock speed drill: 10 Part A questions written under 30 minutes", hrs: 1.5 },
+          { id: "t-1109-3", subj: "da", mod: 0, cat: "rev", text: "Pre-exam checklist: Pack hall ticket, ID, scientific calculator, pens", hrs: 0.5 },
+          { id: "t-1109-4", subj: "all", mod: 0, cat: "rev", text: "REST PROTOCOL: No late-night cramming. Sleep by 10:00 PM for peak mental acuity", hrs: 0.5 }
+        ]
+      },
+
+      // --- PHASE 2: EXAM PERIOD ---
+      {
+        date: "2026-11-10",
+        day: "Tuesday",
+        type: "exam",
+        phase: 2,
+        title: "⚡ EXAM 1: Data Analytics (Slot A: B24CD3T01)",
+        badge: "EXAM 1 (09:30 - 12:30)",
+        primarySubj: "da",
+        secondarySubj: "bdp",
+        tasks: [
+          { id: "t-1110-1", subj: "da", mod: 0, cat: "pyq", text: "EXECUTION: Sit Data Analytics exam (9:30 AM - 12:30 PM). Write clear diagrams & steps", hrs: 3.0 },
+          { id: "t-1110-2", subj: "bdp", mod: 1, cat: "rev", text: "Post-Exam Rest until 3:00 PM. Then Kick off Big Data M1: Hadoop Ecosystem & 5Vs", hrs: 2.0 },
+          { id: "t-1110-3", subj: "bdp", mod: 2, cat: "learn", text: "BDP M2: HDFS Block storage, NameNode HA, and HBase schema design review", hrs: 2.0 }
+        ]
+      },
+      {
+        date: "2026-11-11",
+        day: "Wednesday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 1: Big Data MapReduce & Hive",
+        badge: "BDP Gap Day 1",
+        primarySubj: "bdp",
+        secondarySubj: "bdp",
+        tasks: [
+          { id: "t-1111-1", subj: "bdp", mod: 3, cat: "learn", text: "BDP M3: MapReduce execution pipeline, task management, Inverted Index, Road Enrichment", hrs: 3.0 },
+          { id: "t-1111-2", subj: "bdp", mod: 4, cat: "learn", text: "BDP M4: Stream data sampling & filtering, Hive architecture, HiveQL DDL/DML", hrs: 2.5 },
+          { id: "t-1111-3", subj: "bdp", mod: 5, cat: "learn", text: "BDP M5: Pig Latin operators & functions, Spark RDD operations (map, filter, reduce)", hrs: 2.0 }
+        ]
+      },
+      {
+        date: "2026-11-12",
+        day: "Thursday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 2: Big Data Eve (Model Paper & Architecture)",
+        badge: "BDP Eve (Light)",
+        primarySubj: "bdp",
+        secondarySubj: "bdp",
+        tasks: [
+          { id: "t-1112-1", subj: "bdp", mod: 0, cat: "pyq", text: "BDP Model Paper: Solve Part A 10 questions + Part B architectural questions from S5.pdf", hrs: 3.0 },
+          { id: "t-1112-2", subj: "bdp", mod: 0, cat: "formula", text: "Review key diagrams: HDFS architecture, MapReduce pipeline, Spark component stack", hrs: 2.0 },
+          { id: "t-1112-3", subj: "cd", mod: 2, cat: "rev", text: "Flash Review (45 min): Keep Compiler Design parsing rules warm", hrs: 1.0 },
+          { id: "t-1112-4", subj: "bdp", mod: 0, cat: "rev", text: "Sleep early by 10:30 PM for fresh energy tomorrow", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-13",
+        day: "Friday",
+        type: "exam",
+        phase: 2,
+        title: "⚡ EXAM 2: Big Data Processing (Slot B: B24AM3T01)",
+        badge: "EXAM 2 (09:30 - 12:30)",
+        primarySubj: "bdp",
+        secondarySubj: "cd",
+        tasks: [
+          { id: "t-1113-1", subj: "bdp", mod: 0, cat: "pyq", text: "EXECUTION: Sit Big Data Processing exam (09:30 AM - 12:30 PM)", hrs: 3.0 },
+          { id: "t-1113-2", subj: "cd", mod: 1, cat: "rev", text: "Post-Exam Rest until 3:00 PM. Start Compiler Sprint M1: Lexical analysis & buffer pairs", hrs: 2.0 },
+          { id: "t-1113-3", subj: "cd", mod: 2, cat: "practice", text: "Compiler M2: FIRST and FOLLOW set computations & LL(1) parse table derivation", hrs: 2.0 }
+        ]
+      },
+      {
+        date: "2026-11-14",
+        day: "Saturday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 1: Compiler LR Parsing Intensive",
+        badge: "Compiler Gap Day 1",
+        primarySubj: "cd",
+        secondarySubj: "cd",
+        tasks: [
+          { id: "t-1114-1", subj: "cd", mod: 3, cat: "practice", text: "Compiler M3: LR(0) canonical items, SLR(1) parse table construction & shift/reduce conflicts", hrs: 3.0 },
+          { id: "t-1114-2", subj: "cd", mod: 3, cat: "practice", text: "Compiler M3: CLR (LR(1)) and LALR parse table construction and comparison", hrs: 2.5 },
+          { id: "t-1114-3", subj: "cn", mod: 2, cat: "rev", text: "Maintenance Pass (1 hr): Re-verify Computer Networks IP subnetting formulas", hrs: 1.0 }
+        ]
+      },
+      {
+        date: "2026-11-15",
+        day: "Sunday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 2: SDD, Code Optimization & Model Paper",
+        badge: "Compiler Gap Day 2",
+        primarySubj: "cd",
+        secondarySubj: "cd",
+        tasks: [
+          { id: "t-1115-1", subj: "cd", mod: 4, cat: "practice", text: "Compiler M4: S-attributed vs L-attributed SDDs, Type expressions, Quadruples/Triples", hrs: 3.0 },
+          { id: "t-1115-2", subj: "cd", mod: 5, cat: "learn", text: "Compiler M5: Local Value Numbering, Loop Unrolling, Live sets, Code generator issues", hrs: 2.5 },
+          { id: "t-1115-3", subj: "aad", mod: 1, cat: "rev", text: "Maintenance Pass (1 hr): Rapid flash review of AAD Master Theorem & AVL rotations", hrs: 1.0 }
+        ]
+      },
+      {
+        date: "2026-11-16",
+        day: "Monday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 3: Compiler Eve (Model Paper & Synthesis)",
+        badge: "Compiler Eve (Light)",
+        primarySubj: "cd",
+        secondarySubj: "cd",
+        tasks: [
+          { id: "t-1116-1", subj: "cd", mod: 0, cat: "pyq", text: "Compiler Model Paper: Solve Part A (10 questions) and Part B (11 to 20 from S5.pdf)", hrs: 3.0 },
+          { id: "t-1116-2", subj: "cd", mod: 0, cat: "rev", text: "Synthesize summary: Parsing table rules, activation record layout, DAG construction", hrs: 2.0 },
+          { id: "t-1116-3", subj: "cd", mod: 0, cat: "rev", text: "Sleep early by 10:00 PM for maximum analytical alertness on Tuesday", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-17",
+        day: "Tuesday",
+        type: "exam",
+        phase: 2,
+        title: "⚡ EXAM 3: Compiler Design (Slot C: B24CS3T03)",
+        badge: "EXAM 3 (09:30 - 12:30)",
+        primarySubj: "cd",
+        secondarySubj: "cn",
+        tasks: [
+          { id: "t-1117-1", subj: "cd", mod: 0, cat: "pyq", text: "EXECUTION: Sit Compiler Design exam (09:30 AM - 12:30 PM)", hrs: 3.0 },
+          { id: "t-1117-2", subj: "cn", mod: 1, cat: "rev", text: "Post-Exam Rest until 3:00 PM. URGENT CN SPRINT M1 & M2: Framing, CRC, Subnetting", hrs: 2.5 },
+          { id: "t-1117-3", subj: "cn", mod: 3, cat: "practice", text: "CN M3: Distance Vector Routing vs Link State (Dijkstra algorithm trace)", hrs: 2.0 }
+        ]
+      },
+      {
+        date: "2026-11-18",
+        day: "Wednesday",
+        type: "gap",
+        phase: 2,
+        title: "⚠️ CRITICAL EVE: S3 Networks Eve & Pre-AAD Flash",
+        badge: "CN Eve + AAD Prep",
+        primarySubj: "cn",
+        secondarySubj: "aad",
+        tasks: [
+          { id: "t-1118-1", subj: "cn", mod: 4, cat: "learn", text: "CN M4: TCP 3-way handshake, Sliding window flow control, TCP Tahoe/Reno congestion phases", hrs: 2.5 },
+          { id: "t-1118-2", subj: "cn", mod: 5, cat: "learn", text: "CN M5: DNS resolution, HTTP/HTTPS, RSA public key cryptography numericals", hrs: 2.0 },
+          { id: "t-1118-3", subj: "aad", mod: 0, cat: "formula", text: "🚨 ZERO-GAP PRE-FLASH (2.0 hrs): Review Master Theorem, Floyd-Warshall, AVL rotations, Knapsack for Friday morning!", hrs: 2.0 },
+          { id: "t-1118-4", subj: "cn", mod: 0, cat: "rev", text: "Sleep by 10:30 PM sharp to survive the back-to-back 19 & 20 Nov exams!", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-19",
+        day: "Thursday",
+        type: "exam",
+        phase: 2,
+        title: "⚡ EXAM 4: Computer Networks (S3 Slot D: B24CS2T03) & ZERO-GAP NIGHT",
+        badge: "EXAM 4 + 0-GAP MARATHON",
+        primarySubj: "cn",
+        secondarySubj: "aad",
+        tasks: [
+          { id: "t-1119-1", subj: "cn", mod: 0, cat: "pyq", text: "EXECUTION: Sit Computer Networks S3 Exam (09:30 AM - 12:30 PM)", hrs: 3.0 },
+          { id: "t-1119-2", subj: "aad", mod: 1, cat: "rev", text: "🚨 ZERO-GAP MARATHON (Starts 2:30 PM): AAD M1 & M2: Master Theorem, AVL insert/delete rotations, Disjoint Sets", hrs: 2.5 },
+          { id: "t-1119-3", subj: "aad", mod: 3, cat: "practice", text: "AAD M3 & M4: Fractional Knapsack, Kruskal/Prim MST, Dijkstra, Matrix Chain Multiplication, Floyd-Warshall", hrs: 3.0 },
+          { id: "t-1119-4", subj: "aad", mod: 5, cat: "rev", text: "AAD M5: P vs NP, Clique & Vertex Cover NP-Completeness proofs, Bin Packing", hrs: 1.5 },
+          { id: "t-1119-5", subj: "aad", mod: 0, cat: "rev", text: "Sleep by 11:00 PM: The brain must rest to calculate matrix indices and trees tomorrow", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-20",
+        day: "Friday",
+        type: "exam",
+        phase: 2,
+        title: "⚡ EXAM 5: Algorithm Analysis & Design (Slot D: B24CS3T04)",
+        badge: "EXAM 5 (CRITICAL PASS)",
+        primarySubj: "aad",
+        secondarySubj: "ai",
+        tasks: [
+          { id: "t-1120-1", subj: "aad", mod: 0, cat: "pyq", text: "EXECUTION: Sit Algorithm Analysis and Design Exam (09:30 AM - 12:30 PM). Crack the algorithms!", hrs: 3.0 },
+          { id: "t-1120-2", subj: "all", mod: 0, cat: "rev", text: "🎉 CONGRATULATIONS: The hardest zero-gap bottleneck is conquered! Take a long rest until 4:00 PM", hrs: 2.0 },
+          { id: "t-1120-3", subj: "ai", mod: 1, cat: "learn", text: "AI M1: Intelligent agents, PEAS model, 4 Agent architectures review", hrs: 1.5 }
+        ]
+      },
+      {
+        date: "2026-11-21",
+        day: "Saturday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 1: AI Search & Game Trees",
+        badge: "AI Gap Day 1",
+        primarySubj: "ai",
+        secondarySubj: "ai",
+        tasks: [
+          { id: "t-1121-1", subj: "ai", mod: 2, cat: "practice", text: "AI M2: Problem formulation, DLS, IDS performance, A* heuristic admissibility & consistency", hrs: 2.5 },
+          { id: "t-1121-2", subj: "ai", mod: 3, cat: "practice", text: "AI M3: Minimax game trees & Alpha-Beta pruning, CSP Cryptarithmetic & Map Coloring", hrs: 2.5 },
+          { id: "t-1121-3", subj: "iot", mod: 1, cat: "rev", text: "Light IoT Pass (1 hr): Functional stack, Core network architecture", hrs: 1.0 }
+        ]
+      },
+      {
+        date: "2026-11-22",
+        day: "Sunday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 2: AI Logic, FOL & Modern AI",
+        badge: "AI Gap Day 2",
+        primarySubj: "ai",
+        secondarySubj: "ai",
+        tasks: [
+          { id: "t-1122-1", subj: "ai", mod: 4, cat: "practice", text: "AI M4: Wumpus World, Propositional logic resolution, First-Order Logic (FOL) unification & chaining", hrs: 3.0 },
+          { id: "t-1122-2", subj: "ai", mod: 5, cat: "learn", text: "AI M5: Limitations of symbolic AI, ML paradigms (Supervised, RL, AlphaGo), Ethics & bias", hrs: 2.5 },
+          { id: "t-1122-3", subj: "iot", mod: 3, cat: "rev", text: "Light IoT Pass (1 hr): MQTT QoS levels vs CoAP comparison", hrs: 1.0 }
+        ]
+      },
+      {
+        date: "2026-11-23",
+        day: "Monday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 3: AI Eve (Model Question Paper)",
+        badge: "AI Eve (Light)",
+        primarySubj: "ai",
+        secondarySubj: "ai",
+        tasks: [
+          { id: "t-1123-1", subj: "ai", mod: 0, cat: "pyq", text: "AI Model Paper: Solve Part A (10 questions) and Part B (11 to 20 from S5.pdf)", hrs: 3.0 },
+          { id: "t-1123-2", subj: "ai", mod: 0, cat: "rev", text: "Review key definitions: Rationality, Admissibility, Consistent heuristic, MRV/LCV, Alpha-Beta cuts", hrs: 2.0 },
+          { id: "t-1123-3", subj: "ai", mod: 0, cat: "rev", text: "Sleep early by 10:30 PM for sharp logical reasoning tomorrow", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-24",
+        day: "Tuesday",
+        type: "exam",
+        phase: 2,
+        title: "⚡ EXAM 6: Artificial Intelligence (Slot E: B24CS3T05)",
+        badge: "EXAM 6 (09:30 - 12:30)",
+        primarySubj: "ai",
+        secondarySubj: "iot",
+        tasks: [
+          { id: "t-1124-1", subj: "ai", mod: 0, cat: "pyq", text: "EXECUTION: Sit Artificial Intelligence Exam (09:30 AM - 12:30 PM)", hrs: 3.0 },
+          { id: "t-1124-2", subj: "iot", mod: 1, cat: "rev", text: "Post-Exam Rest until 3:00 PM. IoT Sprint M1 & M2: Functional stack, Sensors/Actuators, LoRaWAN", hrs: 2.5 },
+          { id: "t-1124-3", subj: "iot", mod: 3, cat: "learn", text: "IoT M3: 6LoWPAN IP optimization, MQTT architecture vs CoAP protocol messages", hrs: 2.0 }
+        ]
+      },
+      {
+        date: "2026-11-25",
+        day: "Wednesday",
+        type: "gap",
+        phase: 2,
+        title: "Gap Day 1: IoT Eve (RPi Python, Cloud & Model Paper)",
+        badge: "IoT Eve (Light)",
+        primarySubj: "iot",
+        secondarySubj: "iot",
+        tasks: [
+          { id: "t-1125-1", subj: "iot", mod: 4, cat: "learn", text: "IoT M4: IoT data lifecycle, Edge streaming analytics vs Cloud analytics, Security risks", hrs: 2.0 },
+          { id: "t-1125-2", subj: "iot", mod: 5, cat: "practice", text: "IoT M5: Raspberry Pi GPIO Python programming, RESTful APIs, AWS IoT / ThingSpeak", hrs: 2.5 },
+          { id: "t-1125-3", subj: "iot", mod: 0, cat: "pyq", text: "IoT Model Paper: Solve Part A (10 questions) & Part B architectural questions from S5.pdf", hrs: 2.0 },
+          { id: "t-1125-4", subj: "iot", mod: 0, cat: "rev", text: "Sleep by 10:30 PM: All theory exams conclude tomorrow morning!", hrs: 0.5 }
+        ]
+      },
+      {
+        date: "2026-11-26",
+        day: "Thursday",
+        type: "exam",
+        phase: 2,
+        title: "⚡ EXAM 7: Internet of Things (Elective: B24CS3P13) - THEORY FINALE!",
+        badge: "THEORY FINALE (09:30 - 12:30)",
+        primarySubj: "iot",
+        secondarySubj: "all",
+        tasks: [
+          { id: "t-1126-1", subj: "iot", mod: 0, cat: "pyq", text: "EXECUTION: Sit Internet of Things Exam (09:30 AM - 12:30 PM)", hrs: 3.0 },
+          { id: "t-1126-2", subj: "all", mod: 0, cat: "rev", text: "🎉 CELEBRATION & RECHARGE: S5 Regular Theory Examinations are officially COMPLETED!", hrs: 3.0 }
+        ]
+      },
+
+      // --- PHASE 3: LAB EXAMS PREP & EXECUTION ---
+      {
+        date: "2026-12-01",
+        day: "Tuesday",
+        type: "lab",
+        phase: 3,
+        title: "Lab Prep Day 1: Data Analytics Lab (B24CD3L07)",
+        badge: "DA Lab Prep",
+        primarySubj: "lab",
+        secondarySubj: "lab",
+        tasks: [
+          { id: "t-1201-1", subj: "lab", mod: 1, cat: "practice", text: "DA Lab: Weka exploratory data analysis & document similarity algorithms", hrs: 2.5 },
+          { id: "t-1201-2", subj: "lab", mod: 1, cat: "practice", text: "DA Lab: Implement Apriori association rules, K-Means & Single linkage clustering in Python", hrs: 3.0 },
+          { id: "t-1201-3", subj: "lab", mod: 1, cat: "pyq", text: "DA Lab: Prepare answers for Viva-voce questions on information gain and distance metrics", hrs: 1.5 }
+        ]
+      },
+      {
+        date: "2026-12-02",
+        day: "Wednesday",
+        type: "lab",
+        phase: 3,
+        title: "Lab Prep Day 2: Machine Learning Lab (B24AM3L08)",
+        badge: "ML Lab Prep",
+        primarySubj: "lab",
+        secondarySubj: "lab",
+        tasks: [
+          { id: "t-1202-1", subj: "lab", mod: 2, cat: "practice", text: "ML Lab: Linear & Polynomial regression, Logistic regression (MLE & MAP) on Breast Cancer", hrs: 3.0 },
+          { id: "t-1202-2", subj: "lab", mod: 2, cat: "practice", text: "ML Lab: Multilayer Perceptron backpropagation implementation & activation tuning", hrs: 2.5 },
+          { id: "t-1202-3", subj: "lab", mod: 2, cat: "pyq", text: "ML Lab: Bagging, Boosting on Titanic dataset & Bias-variance trade-off experiment", hrs: 1.5 }
+        ]
+      },
+      {
+        date: "2026-12-03",
+        day: "Thursday",
+        type: "lab",
+        phase: 3,
+        title: "Lab Prep Day 3: Record Books & Final Viva Simulation",
+        badge: "Lab Record Signoff",
+        primarySubj: "lab",
+        secondarySubj: "lab",
+        tasks: [
+          { id: "t-1203-1", subj: "lab", mod: 0, cat: "formula", text: "Lab Records: Verify all 10 Data Analytics + 14 ML Lab experiments are documented", hrs: 2.5 },
+          { id: "t-1203-2", subj: "lab", mod: 0, cat: "pyq", text: "Viva Drill: Master performance metrics (Precision, Recall, F1, ROC-AUC, Silhouette score)", hrs: 2.0 },
+          { id: "t-1203-3", subj: "lab", mod: 0, cat: "rev", text: "Test Python scripts in VS Code environment to ensure error-free runtime", hrs: 1.5 }
+        ]
+      },
+      {
+        date: "2026-12-04",
+        day: "Friday",
+        type: "lab",
+        phase: 3,
+        title: "🔬 Practical Exam Window Starts (04 Dec – 11 Dec 2026)",
+        badge: "LAB EXAM PERIOD",
+        primarySubj: "lab",
+        secondarySubj: "lab",
+        tasks: [
+          { id: "t-1204-1", subj: "lab", mod: 0, cat: "practice", text: "Department Practical Examinations: Execute lab programs & defend viva-voce", hrs: 3.5 },
+          { id: "t-1204-2", subj: "all", mod: 0, cat: "rev", text: "CONGRATULATIONS: Successful completion of S5 AIML Autonomous Curriculum!", hrs: 1.0 }
+        ]
+      }
+    ];
+
+    // --- State & LocalStorage Persistence ---
+    let completedTasks = {};
+    try {
+      const saved = localStorage.getItem("mace_aiml_study_progress");
+      if (saved) completedTasks = JSON.parse(saved);
+    } catch(e) {
+      console.warn("Storage access issue", e);
+    }
+
+    function saveProgress() {
+      try {
+        localStorage.setItem("mace_aiml_study_progress", JSON.stringify(completedTasks));
+      } catch(e) {}
+      updateProgressMetrics();
+    }
+
+    function toggleTask(taskId) {
+      completedTasks[taskId] = !completedTasks[taskId];
+      const el = document.getElementById(`task-check-${taskId}`);
+      if (el) {
+        el.checked = !!completedTasks[taskId];
+        const parent = el.closest(".task-item");
+        if (parent) {
+          parent.classList.toggle("completed", !!completedTasks[taskId]);
+        }
+      }
+      saveProgress();
+    }
+
+    // --- Progress Calculation ---
+    function updateProgressMetrics() {
+      let totalTasks = 0;
+      let doneTasks = 0;
+      let totalHrs = 0;
+      let doneHrs = 0;
+
+      const subjStats = {};
+      Object.keys(SUBJECTS).forEach(s => {
+        subjStats[s] = { total: 0, done: 0 };
+      });
+
+      SCHEDULE_DAYS.forEach(day => {
+        day.tasks.forEach(t => {
+          totalTasks++;
+          totalHrs += t.hrs || 1;
+          const isDone = !!completedTasks[t.id];
+          if (isDone) {
+            doneTasks++;
+            doneHrs += t.hrs || 1;
+          }
+          if (subjStats[t.subj]) {
+            subjStats[t.subj].total++;
+            if (isDone) subjStats[t.subj].done++;
+          }
+        });
+      });
+
+      const pct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+      document.getElementById("master-progress-fill").style.width = `${pct}%`;
+      document.getElementById("progress-subtext").innerText = `${doneTasks} of ${totalTasks} tasks completed (${pct}%)`;
+      document.getElementById("stat-completed").innerText = doneTasks;
+      document.getElementById("stat-remaining").innerText = totalTasks - doneTasks;
+      document.getElementById("stat-hours").innerText = `${doneHrs.toFixed(1)}h`;
+
+      // Update Subject Cards
+      Object.keys(SUBJECTS).forEach(s => {
+        const bar = document.getElementById(`subj-bar-${s}`);
+        const stat = document.getElementById(`subj-stat-${s}`);
+        if (bar && stat) {
+          const sTotal = subjStats[s].total;
+          const sDone = subjStats[s].done;
+          const sPct = sTotal > 0 ? Math.round((sDone / sTotal) * 100) : 0;
+          bar.style.width = `${sPct}%`;
+          stat.innerText = `${sDone}/${sTotal} (${sPct}%)`;
+        }
+      });
+    }
+
+    // --- Render Timeline Ribbon ---
+    function renderTimeline() {
+      const container = document.getElementById("timeline-track");
+      container.innerHTML = "";
+
+      SCHEDULE_DAYS.forEach(day => {
+        const el = document.createElement("div");
+        el.className = `timeline-day ${day.type}-day`;
+        if (day.date === "2026-10-29") el.classList.add("today");
+        if (day.date === "2026-11-20") el.classList.add("zero-gap");
+
+        const dateParts = day.date.split("-");
+        const dayNum = dateParts[2];
+        const monthNum = dateParts[1] === "10" ? "Oct" : dateParts[1] === "11" ? "Nov" : "Dec";
+
+        let badgeBg = "rgba(255,255,255,0.1)";
+        let badgeColor = "var(--text-muted)";
+        if (day.type === "exam") {
+          badgeBg = "rgba(239, 68, 68, 0.25)";
+          badgeColor = "#f87171";
+        } else if (day.type === "gap") {
+          badgeBg = "rgba(16, 185, 129, 0.2)";
+          badgeColor = "#34d399";
+        } else if (day.type === "lab") {
+          badgeBg = "rgba(236, 72, 153, 0.2)";
+          badgeColor = "#f472b6";
+        }
+
+        el.innerHTML = `
+          <div class="day-num">${dayNum}</div>
+          <div class="day-name">${monthNum} • ${day.day.substring(0,3)}</div>
+          <div class="day-badge" style="background:${badgeBg}; color:${badgeColor};" title="${day.badge}">${day.badge}</div>
+        `;
+
+        el.onclick = () => {
+          scrollToDay(day.date);
+        };
+
+        container.appendChild(el);
+      });
+    }
+
+    // --- Render Subject Summary Cards ---
+    function renderSubjectCards() {
+      const container = document.getElementById("subject-cards-grid");
+      container.innerHTML = "";
+
+      Object.values(SUBJECTS).forEach(s => {
+        const card = document.createElement("div");
+        card.className = "subj-pill";
+        card.style.setProperty("--accent", s.color);
+        card.onclick = () => openDrawer(s.id, 1);
+
+        card.innerHTML = `
+          <div class="subj-header">
+            <span class="subj-name">${s.name}</span>
+            <span class="subj-date">${s.date ? s.date.substring(5) : 'Dec'}</span>
+          </div>
+          <div style="font-size:0.72rem; color:var(--text-muted);">${s.slot} • ${s.code}</div>
+          <div class="subj-bar">
+            <div class="subj-bar-fill" id="subj-bar-${s.id}"></div>
+          </div>
+          <div class="subj-stats">
+            <span>Progress:</span>
+            <span id="subj-stat-${s.id}">0/0 (0%)</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // --- Render Tree-Structured Flowchart ---
+    function renderTree() {
+      // Phase 1 Children (Pre-Exam Days)
+      const p1Container = document.getElementById("phase-1-children");
+      p1Container.innerHTML = "";
+
+      SCHEDULE_DAYS.filter(d => d.phase === 1).forEach(d => {
+        const dayNode = document.createElement("div");
+        dayNode.className = "tree-node-wrapper";
+        dayNode.id = `tree-day-${d.date}`;
+
+        let taskHtml = "";
+        d.tasks.forEach(t => {
+          const isDone = !!completedTasks[t.id];
+          const subjObj = SUBJECTS[t.subj] || { color: "var(--text-muted)", name: "General" };
+          taskHtml += `
+            <div class="task-item ${isDone ? 'completed' : ''}" onclick="toggleTask('${t.id}')">
+              <input type="checkbox" id="task-check-${t.id}" ${isDone ? 'checked' : ''} onclick="event.stopPropagation(); toggleTask('${t.id}')">
+              <span class="task-category cat-${t.cat}">${t.cat}</span>
+              <span style="border-left: 2px solid ${subjObj.color}; padding-left: 6px;">${t.text}</span>
+              <span class="node-tag">${t.hrs}h</span>
+            </div>
+          `;
+        });
+
+        dayNode.innerHTML = `
+          <div class="tree-node-item">
+            <div class="node-header" onclick="toggleCollapse(this)">
+              <span class="collapse-icon">▼</span>
+              <strong>${d.date.substring(5)} (${d.day}): ${d.title}</strong>
+              <span class="node-tag">${d.badge}</span>
+              <button class="node-details-btn" onclick="event.stopPropagation(); openDrawer('${d.primarySubj}', 1)">📖 Syllabus</button>
+            </div>
+            <div class="node-children" style="margin-left: 20px; margin-top: 6px;">
+              ${taskHtml}
+            </div>
+          </div>
+        `;
+        p1Container.appendChild(dayNode);
+      });
+
+      // Phase 2 Children (Exam Period Branches)
+      const p2Container = document.getElementById("phase-2-children");
+      p2Container.innerHTML = "";
+
+      // List of theory exams
+      const examSubjs = [SUBJECTS.da, SUBJECTS.bdp, SUBJECTS.cd, SUBJECTS.cn, SUBJECTS.aad, SUBJECTS.ai, SUBJECTS.iot];
+
+      examSubjs.forEach(s => {
+        const examNode = document.createElement("div");
+        examNode.className = "tree-node-wrapper";
+        examNode.style.setProperty("--subject-color", s.color);
+
+        let moduleNodesHtml = "";
+        s.modules.forEach(m => {
+          moduleNodesHtml += `
+            <div class="tree-node-wrapper">
+              <div class="tree-node-item">
+                <div class="node-header module-node" onclick="toggleCollapse(this)">
+                  <span class="collapse-icon">▼</span>
+                  <span><strong>Module ${m.num}:</strong> ${m.title}</span>
+                  <span class="node-tag">${m.hours} hrs syllabus</span>
+                  <button class="node-details-btn" onclick="event.stopPropagation(); openDrawer('${s.id}', ${m.num})">🔍 Topics & PYQ</button>
+                </div>
+                <div class="node-children" style="margin-left: 20px; margin-top: 6px;">
+                  <div class="task-item" style="font-size:0.78rem; color:var(--text-muted); background:transparent; border:none; padding:2px 0;">
+                    <em>Core Syllabus Focus: ${m.topics.slice(0, 2).join("; ")}...</em>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        // Last 24 Hours Checklist Node
+        const eveChecklistHtml = `
+          <div class="tree-node-wrapper">
+            <div class="tree-node-item">
+              <div class="node-header" style="border-left: 3px solid #ec4899; background:rgba(236,72,153,0.15);" onclick="toggleCollapse(this)">
+                <span class="collapse-icon">▼</span>
+                <span>⏱️ <strong>Last 24 Hours High-Yield Protocol (${s.name})</strong></span>
+                <span class="node-tag" style="background:#ec4899; color:white;">Pre-Exam Eve</span>
+              </div>
+              <div class="node-children" style="margin-left:20px; margin-top:6px;">
+                <div class="task-item" onclick="toggleTask('eve-${s.id}-1')">
+                  <input type="checkbox" id="task-check-eve-${s.id}-1" ${completedTasks['eve-'+s.id+'-1'] ? 'checked':''} onclick="event.stopPropagation(); toggleTask('eve-${s.id}-1')">
+                  <span class="task-category cat-formula">Formula Sheet</span>
+                  <span>Review 1-page condensed formula & architecture cheatsheet</span>
+                </div>
+                <div class="task-item" onclick="toggleTask('eve-${s.id}-2')">
+                  <input type="checkbox" id="task-check-eve-${s.id}-2" ${completedTasks['eve-'+s.id+'-2'] ? 'checked':''} onclick="event.stopPropagation(); toggleTask('eve-${s.id}-2')">
+                  <span class="task-category cat-pyq">Part A Speed</span>
+                  <span>Rapid read-through of 10 Model Paper Part A questions</span>
+                </div>
+                <div class="task-item" onclick="toggleTask('eve-${s.id}-3')">
+                  <input type="checkbox" id="task-check-eve-${s.id}-3" ${completedTasks['eve-'+s.id+'-3'] ? 'checked':''} onclick="event.stopPropagation(); toggleTask('eve-${s.id}-3')">
+                  <span class="task-category cat-rev">Rest Protocol</span>
+                  <span>Pack hall ticket, calculator, pens; sleep by 10:30 PM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        examNode.innerHTML = `
+          <div class="tree-node-item">
+            <div class="node-header exam-node" onclick="toggleCollapse(this)">
+              <span class="collapse-icon">▼</span>
+              <span><strong>${s.name}</strong> (${s.code}) • ${s.date} [${s.day}]</span>
+              <span class="node-tag">${s.slot}</span>
+              ${s.id === 'cn' ? '<span class="node-tag s3-tag">S3 Backlog / Reg Track</span>' : ''}
+              ${s.id === 'aad' ? '<span class="node-tag highlight">⚠️ ZERO-GAP BOTTLENECK</span>' : ''}
+              <button class="node-details-btn" onclick="event.stopPropagation(); openDrawer('${s.id}', 1)">📖 Full Syllabus</button>
+            </div>
+            <div class="node-children" style="margin-left: 20px; margin-top: 6px;">
+              ${moduleNodesHtml}
+              ${eveChecklistHtml}
+            </div>
+          </div>
+        `;
+        p2Container.appendChild(examNode);
+      });
+
+      // Phase 3 Children (Lab Exams)
+      const p3Container = document.getElementById("phase-3-children");
+      p3Container.innerHTML = "";
+
+      const lab = SUBJECTS.lab;
+      lab.modules.forEach(lm => {
+        const labNode = document.createElement("div");
+        labNode.className = "tree-node-wrapper";
+
+        let expList = "";
+        lm.topics.forEach((exp, idx) => {
+          const tId = `lab-${lm.num}-${idx}`;
+          const isDone = !!completedTasks[tId];
+          expList += `
+            <div class="task-item ${isDone ? 'completed' : ''}" onclick="toggleTask('${tId}')">
+              <input type="checkbox" id="task-check-${tId}" ${isDone ? 'checked' : ''} onclick="event.stopPropagation(); toggleTask('${tId}')">
+              <span class="task-category cat-practice">Exp ${idx+1}</span>
+              <span>${exp}</span>
+            </div>
+          `;
+        });
+
+        labNode.innerHTML = `
+          <div class="tree-node-item">
+            <div class="node-header" style="border-left: 3px solid var(--color-lab);" onclick="toggleCollapse(this)">
+              <span class="collapse-icon">▼</span>
+              <span><strong>${lm.title}</strong> (04 - 11 Dec 2026)</span>
+              <span class="node-tag">${lm.topics.length} Experiments</span>
+              <button class="node-details-btn" onclick="event.stopPropagation(); openDrawer('lab', ${lm.num})">🔍 Viva & Hints</button>
+            </div>
+            <div class="node-children" style="margin-left: 20px; margin-top: 6px;">
+              ${expList}
+            </div>
+          </div>
+        `;
+        p3Container.appendChild(labNode);
+      });
+    }
+
+    // --- Render Day-by-Day Agenda Table ---
+    function renderTable() {
+      const tbody = document.getElementById("agenda-table-body");
+      tbody.innerHTML = "";
+
+      SCHEDULE_DAYS.forEach(d => {
+        const row = document.createElement("tr");
+        if (d.date === "2026-10-29") row.classList.add("highlight-day");
+        if (d.type === "exam") row.classList.add("exam-row");
+
+        let tasksList = '<ul style="padding-left:16px; margin:0; display:flex; flex-direction:column; gap:4px;">';
+        let doneCount = 0;
+        d.tasks.forEach(t => {
+          const isDone = !!completedTasks[t.id];
+          if (isDone) doneCount++;
+          tasksList += `
+            <li style="${isDone ? 'text-decoration:line-through; opacity:0.6;' : ''}">
+              <strong style="color:var(--text-accent);">[${t.cat.toUpperCase()}]</strong> ${t.text} (${t.hrs}h)
+            </li>
+          `;
+        });
+        tasksList += '</ul>';
+
+        const subjObj = SUBJECTS[d.primarySubj] || { name: "Exam Event", color: "#ccc" };
+
+        row.innerHTML = `
+          <td>
+            <strong>${d.date.substring(5)}</strong><br>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${d.day}</span>
+            ${d.date === '2026-10-29' ? '<br><span class="node-tag" style="background:#0284c7; color:white;">TODAY</span>' : ''}
+          </td>
+          <td>
+            <span style="color:${subjObj.color}; font-weight:700;">● ${subjObj.name}</span><br>
+            <span style="font-size:0.72rem; color:var(--text-muted);">${d.title}</span>
+          </td>
+          <td>${tasksList}</td>
+          <td>
+            <span class="node-tag">${d.badge}</span>
+          </td>
+          <td><strong>${d.tasks.reduce((a,b)=>a+b.hrs, 0)} hrs</strong></td>
+          <td>
+            <span style="font-weight:700; color:${doneCount === d.tasks.length ? '#10b981' : 'var(--text-accent)'};">
+              ${doneCount}/${d.tasks.length}
+            </span>
+          </td>
+        `;
+
+        tbody.appendChild(row);
+      });
+    }
+
+    // --- Drawer Functions ---
+    function openDrawer(subjId, modNum) {
+      const subj = SUBJECTS[subjId];
+      if (!subj) return;
+
+      const mod = subj.modules.find(m => m.num === modNum) || subj.modules[0];
+      
+      document.getElementById("drawer-title").innerText = `${subj.name} (${subj.code})`;
+      document.getElementById("drawer-subtitle").innerText = `${subj.slot} • Module ${mod.num}: ${mod.title}`;
+
+      let topicsHtml = "";
+      mod.topics.forEach(t => {
+        topicsHtml += `<li>${t}</li>`;
+      });
+
+      let pyqsHtml = "";
+      if (mod.pyqs && mod.pyqs.length > 0) {
+        mod.pyqs.forEach(q => {
+          pyqsHtml += `<div class="pyq-box">❓ <strong>Model Question:</strong> ${q}</div>`;
+        });
+      }
+
+      let allModulesNav = '<div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">';
+      subj.modules.forEach(m => {
+        allModulesNav += `
+          <button class="btn" style="padding:4px 8px; font-size:0.75rem; ${m.num === mod.num ? 'background:var(--text-accent); color:black;' : ''}" 
+            onclick="openDrawer('${subjId}', ${m.num})">
+            M${m.num}
+          </button>
+        `;
+      });
+      allModulesNav += '</div>';
+
+      document.getElementById("drawer-content").innerHTML = `
+        <div class="detail-card">
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px;">SWITCH MODULE</div>
+          ${allModulesNav}
+          <h3>📘 Module ${mod.num}: ${mod.title}</h3>
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-bottom:12px;">Official lecture allocation: ${mod.hours} hours</div>
+          
+          <h4 style="font-size:0.85rem; margin-bottom:8px;">Verbatim Syllabus Topics (from S5.pdf):</h4>
+          <ul class="syllabus-list">
+            ${topicsHtml}
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h3>🎯 High-Yield Model Questions & Hints</h3>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">Extracted from MACE Autonomous Model Question Papers:</div>
+          ${pyqsHtml}
+        </div>
+
+        <div class="detail-card">
+          <h3>💡 Strategic Advice for ${subj.name}</h3>
+          <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:6px;">
+            ${subjId === 'aad' ? '⚠️ <strong>CRITICAL ZERO-GAP EXAM:</strong> You only have 18 hours after Computer Networks to sit this paper. Ensure all Master Theorem recurrences, AVL rotations, and Floyd-Warshall matrices are thoroughly pre-memorized during Oct 29 - Nov 06.' :
+              subjId === 'cd' ? '⚡ <strong>PARSING TABLE ACCURACY:</strong> In SLR and LALR parser tables, double-check shift/reduce actions and state numbers. Write out the augmented grammar explicitly to secure full 14 marks.' :
+              subjId === 'da' ? '📈 <strong>FIRST EXAM MOMENTUM:</strong> Data Analytics sets the tone for your exam series. Ensure contingency table math, IQR calculations, and Backprop weight update formulas are crystal clear.' :
+              subjId === 'cn' ? '🌐 <strong>SUBNETTING & PROTOCOLS:</strong> Practice CIDR subnet splitting and TCP congestion control diagrams. This is an S3 paper, so high clarity on basics will guarantee high grades.' :
+              'Focus on structured answers with neat block diagrams, state transition tables, and modular bullet points.'}
+          </p>
+        </div>
+      `;
+
+      document.getElementById("side-drawer").classList.add("open");
+      document.getElementById("drawer-overlay").classList.add("open");
+    }
+
+    function closeDrawer() {
+      document.getElementById("side-drawer").classList.remove("open");
+      document.getElementById("drawer-overlay").classList.remove("open");
+    }
+
+    // --- Tree Collapsing & Expanding ---
+    function toggleCollapse(headerEl) {
+      const item = headerEl.closest(".tree-node-item");
+      if (item) {
+        item.classList.toggle("collapsed");
+      }
+    }
+
+    document.getElementById("expand-all-btn").addEventListener("click", () => {
+      document.querySelectorAll(".tree-node-item").forEach(item => {
+        item.classList.remove("collapsed");
+      });
+    });
+
+    document.getElementById("collapse-all-btn").addEventListener("click", () => {
+      // Collapse everything except root and phase nodes
+      document.querySelectorAll(".tree-node-item").forEach(item => {
+        if (!item.querySelector(".root-node") && !item.classList.contains("phase-node")) {
+          item.classList.add("collapsed");
+        }
+      });
+    });
+
+    // --- Search & Filter ---
+    document.getElementById("task-search").addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      filterTasks(query, document.getElementById("subject-filter").value);
+    });
+
+    document.getElementById("subject-filter").addEventListener("change", (e) => {
+      const subj = e.target.value;
+      filterTasks(document.getElementById("task-search").value.toLowerCase().trim(), subj);
+    });
+
+    function filterTasks(query, subjFilter) {
+      document.querySelectorAll(".task-item").forEach(item => {
+        const text = item.innerText.toLowerCase();
+        const matchesQuery = !query || text.includes(query);
+        let matchesSubj = true;
+
+        if (subjFilter !== "all") {
+          const itemCheck = item.querySelector("input[type='checkbox']");
+          const id = itemCheck ? itemCheck.id : "";
+          // Check task subject from id or text
+          matchesSubj = text.includes(SUBJECTS[subjFilter]?.name.toLowerCase() || subjFilter);
+        }
+
+        item.style.display = (matchesQuery && matchesSubj) ? "flex" : "none";
+      });
+    }
+
+    // --- Tabs (Tree vs Table) ---
+    document.getElementById("tab-tree-btn").addEventListener("click", () => {
+      document.getElementById("tab-tree-btn").classList.add("active");
+      document.getElementById("tab-table-btn").classList.remove("active");
+      document.getElementById("tree-view").style.display = "block";
+      document.getElementById("table-view").style.display = "none";
+    });
+
+    document.getElementById("tab-table-btn").addEventListener("click", () => {
+      document.getElementById("tab-table-btn").classList.add("active");
+      document.getElementById("tab-tree-btn").classList.remove("active");
+      document.getElementById("tree-view").style.display = "none";
+      document.getElementById("table-view").style.display = "block";
+      renderTable();
+    });
+
+    // --- Live Countdowns ---
+    function updateCountdowns() {
+      // Reference simulated system date: 2026-10-29T00:00:00
+      const now = new Date();
+      // Target exam dates
+      const examDates = {
+        da: new Date("2026-11-10T09:30:00"),
+        bdp: new Date("2026-11-13T09:30:00"),
+        cd: new Date("2026-11-17T09:30:00"),
+        cn: new Date("2026-11-19T09:30:00"),
+        aad: new Date("2026-11-20T09:30:00"),
+        ai: new Date("2026-11-24T09:30:00"),
+        iot: new Date("2026-11-26T09:30:00"),
+        lab: new Date("2026-12-04T09:30:00")
+      };
+
+      // Reference date for countdown: 29 Oct 2026
+      const refDate = new Date("2026-10-29T00:00:00");
+
+      Object.entries(examDates).forEach(([key, dt]) => {
+        const diffMs = dt - refDate;
+        const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+        const chip = document.getElementById(`cd-${key}`);
+        if (chip) {
+          const sObj = SUBJECTS[key] || { name: key.toUpperCase() };
+          chip.innerHTML = `${sObj.name}: <strong>${diffDays} Days</strong> left`;
+        }
+      });
+    }
+
+    // --- Pomodoro Focus Timer ---
+    let timerDuration = 25 * 60;
+    let timerRemaining = timerDuration;
+    let timerInterval = null;
+    let is50mMode = false;
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById("timer-digits").innerText = formatTime(timerRemaining);
+    }
+
+    document.getElementById("timer-start-btn").addEventListener("click", () => {
+      if (timerInterval) return;
+      document.getElementById("timer-status").innerText = "🔥 Deep Focus in Session...";
+      timerInterval = setInterval(() => {
+        if (timerRemaining > 0) {
+          timerRemaining--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          document.getElementById("timer-status").innerText = "🎉 Session Completed! Take 10m Break.";
+          playChime();
+          alert("Focus session complete! Take a well-earned break and hydrate.");
+        }
+      }, 1000);
+    });
+
+    document.getElementById("timer-pause-btn").addEventListener("click", () => {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      document.getElementById("timer-status").innerText = "⏸️ Timer Paused";
+    });
+
+    document.getElementById("timer-reset-btn").addEventListener("click", () => {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerRemaining = timerDuration;
+      updateTimerDisplay();
+      document.getElementById("timer-status").innerText = "🎯 Ready for Deep Work";
+    });
+
+    document.getElementById("timer-mode-btn").addEventListener("click", () => {
+      is50mMode = !is50mMode;
+      timerDuration = is50mMode ? 50 * 60 : 25 * 60;
+      timerRemaining = timerDuration;
+      document.getElementById("timer-mode-btn").innerText = is50mMode ? "⚡ 25m Mode" : "⚡ 50m Mode";
+      updateTimerDisplay();
+    });
+
+    function playChime() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15); // A5
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.8);
+      } catch(e) {}
+    }
+
+    // --- Reset Progress ---
+    document.getElementById("reset-progress-btn").addEventListener("click", () => {
+      if (confirm("Are you sure you want to reset all task checkboxes to 0%?")) {
+        completedTasks = {};
+        saveProgress();
+        renderTree();
+        renderTable();
+      }
+    });
+
+    // --- Print / Export ---
+    document.getElementById("print-btn").addEventListener("click", () => {
+      // Expand all before printing
+      document.querySelectorAll(".tree-node-item").forEach(item => item.classList.remove("collapsed"));
+      window.print();
+    });
+
+    // --- Theme Toggle ---
+    const themeBtn = document.getElementById("theme-toggle");
+    let currentTheme = localStorage.getItem("mace_theme") || "dark";
+    document.documentElement.setAttribute("data-theme", currentTheme);
+    themeBtn.innerText = currentTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+
+    themeBtn.addEventListener("click", () => {
+      currentTheme = currentTheme === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", currentTheme);
+      themeBtn.innerText = currentTheme === "dark" ? "☀️ Light" : "🌙 Dark";
+      localStorage.setItem("mace_theme", currentTheme);
+    });
+
+    function scrollToDay(dateStr) {
+      document.getElementById("tab-tree-btn").click();
+      const el = document.getElementById(`tree-day-${dateStr}`);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.querySelector(".node-header").style.boxShadow = "0 0 15px #38bdf8";
+        setTimeout(() => {
+          el.querySelector(".node-header").style.boxShadow = "";
+        }, 2000);
+      }
+    }
+
+    // --- Initialization ---
+    window.addEventListener("DOMContentLoaded", () => {
+      renderTimeline();
+      renderSubjectCards();
+      renderTree();
+      updateCountdowns();
+      updateProgressMetrics();
+
+      // Default collapse level: show Root -> Phases -> Exams
+      // Collapse Module children by default for clean tree view
+      document.querySelectorAll(".module-node").forEach(mn => {
+        const item = mn.closest(".tree-node-item");
+        if (item) item.classList.add("collapsed");
+      });
+    });
+  </script>
+</body>
+</html>
